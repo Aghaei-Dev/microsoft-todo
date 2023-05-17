@@ -183,7 +183,8 @@ export default SingleNote
 
 const Wrapper = styled.div`
   width: 100%;
-  max-height: 8vh;
+  word-wrap: break-word;
+  word-break: break-all;
   min-height: 50px;
   background: var(--bg-primary);
   box-shadow: var(--light-shadow);

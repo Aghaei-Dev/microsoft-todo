@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from 'react'
 
 import useSound from 'use-sound'
 import sound from '../assets/sound/doneSound.mp3'
-// import axios from 'axios'
 import { db } from '../firebase'
 import {
   collection,
@@ -17,15 +16,13 @@ import { getDarkMode, getSidebarTitle } from '../func/functions'
 const ToDoContext = React.createContext()
 
 const MicrosoftTodoProvider = ({ children }) => {
+  const [showBottomRow, setShowBottomRow] = useState(false)
   //sound
   const [play] = useSound(sound)
 
   const [mainSearchValue, setMainSearchValue] = useState()
   // eslint-disable-next-line
   const [isLoading, setIsLoading] = useState(false)
-
-  // error
-  // const [error, setError] = useState({ show: false, msg: '' })
 
   //darkMode
   const [isDarkMode, setIsDarkMode] = useState(getDarkMode())
@@ -126,12 +123,14 @@ const MicrosoftTodoProvider = ({ children }) => {
     setToDoIsLoading(false)
   }
 
+  //have problems
   const findInformation = async (id) => {
     const specificItem = allToDo.find((item) => item.id === id)
     setInformation(specificItem)
 
     getTodo()
   }
+
   const setAsCompleted = async (id) => {
     const specificItem = doc(db, 'ToDo', id)
     await updateDoc(specificItem, { isCompleted: true })
@@ -163,31 +162,24 @@ const MicrosoftTodoProvider = ({ children }) => {
 
   //most develop
 
-  const noteHandler = async (id, text) => {
-    const specificItem = doc(db, 'ToDo', id)
-    await updateDoc(specificItem, { note: text })
-    getTodo()
-  }
-
   const clearInputHandler = () => {
     setInputText('')
     setMainSearchValue('')
   }
+
+  //for responsively
   const [width, setWidth] = useState(window.innerWidth)
   const [height, setHeight] = useState(window.innerHeight)
-
   const resize = () => {
     setWidth(window.innerWidth)
     setHeight(window.innerHeight)
   }
-
-  //set size of window
   useEffect(() => {
     window.addEventListener('resize', resize)
     return () => {
       window.removeEventListener('resize', resize)
     }
-  })
+  }, [width, height])
 
   useEffect(() => {
     localStorage.setItem('sidebarTitle', JSON.stringify(sidebarTitle))
@@ -211,7 +203,6 @@ const MicrosoftTodoProvider = ({ children }) => {
   return (
     <ToDoContext.Provider
       value={{
-        // error,
         print,
         isLoading,
         isDarkMode,
@@ -250,9 +241,10 @@ const MicrosoftTodoProvider = ({ children }) => {
         findInformation,
         information,
         deleteHandler,
-        noteHandler,
         toDoIsLoading,
         allToDo,
+        showBottomRow,
+        setShowBottomRow,
       }}>
       {children}
     </ToDoContext.Provider>

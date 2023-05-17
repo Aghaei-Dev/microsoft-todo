@@ -63,7 +63,7 @@ const LeftSideBar = () => {
     {
       icon: <HomeOutlinedIcon fontSize='small' />,
       text: 'tasks',
-      length: allToDo.length,
+      length: allToDo.filter((item) => item.isCompleted === false).length,
     },
   ]
   React.useEffect(() => {

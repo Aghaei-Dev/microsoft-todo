@@ -6,12 +6,12 @@ import { PageTopRow } from './comp/TopRow'
 
 import { AddTask } from './comp'
 import { Wrapper } from '../../assets/style/StyledComponent'
-import CompletedRow from '../Todo/CompletedRow'
 import { Input } from '../'
-// import Sort from '../../Sort'
 import { useGlobalContext } from '../../context/context'
+import CompletedRow from '../Todo/CompletedRow'
 const MyDay = () => {
-  const { submitHandler, completed, notCompleted } = useGlobalContext()
+  const { submitHandler, completed, notCompleted, showBottomRow } =
+    useGlobalContext()
   return (
     <>
       <Wrapper>
@@ -24,8 +24,8 @@ const MyDay = () => {
             submitHandler(e, false)
           }}
         />
+        {showBottomRow && <AddTask />}
 
-        <AddTask />
         <CompletedRow
           listInTop={notCompleted}
           listInAccordion={completed}

@@ -6,12 +6,19 @@ import { PageTopRow } from './comp/TopRow'
 
 import { Wrapper } from '../../assets/style/StyledComponent'
 import CompletedRow from '../Todo/CompletedRow'
-
+import { useGlobalContext } from '../../context/context'
 const Completed = () => {
+  const { completed } = useGlobalContext()
   return (
     <Wrapper>
       <PageTopRow title='Completed' logo={<CheckCircleOutlinedIcon />} />
-      <CompletedRow title='tasks' showCompleted />
+
+      <CompletedRow
+        listInAccordion={completed}
+        listInAccordionTitle='completed'
+        title='tasks'
+        showCompleted
+      />
     </Wrapper>
   )
 }

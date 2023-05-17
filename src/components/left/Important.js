@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { StarOutlineOutlinedIcon } from '../../assets/icons'
 
@@ -9,13 +9,25 @@ import CompletedRow from '../Todo/CompletedRow'
 import { useGlobalContext } from '../../context/context'
 import { Input } from '..'
 const Important = () => {
-  const { important, specialSubmit } = useGlobalContext()
+  const { important, submitHandler } = useGlobalContext()
   return (
     <Wrapper>
       <PageTopRow title='important' logo={<StarOutlineOutlinedIcon />} />
-      <Input submitHandler={specialSubmit} />
+      <Input
+        submitHandler={(e) => {
+          submitHandler(e, true)
+        }}
+      />
       <AddTask />
-      <CompletedRow showNotCompleted listInAccordion={important} />
+      <CompletedRow
+        listInTop={important}
+        listInTopTitle='important'
+        listInAccordion={important}
+        listInAccordionTitle='important'
+        title='completed'
+        showNotCompleted
+        showCompleted
+      />
     </Wrapper>
   )
 }

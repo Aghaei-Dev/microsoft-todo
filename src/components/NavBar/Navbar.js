@@ -9,6 +9,7 @@ import {
   Tooltip,
   Paper,
   InputBase,
+  LinearProgress,
 } from '@mui/material'
 
 //icons
@@ -32,6 +33,7 @@ const Navbar = () => {
     mainSearchValue,
     setMainSearchValue,
     clearInputHandler,
+    toDoIsLoading,
   } = useGlobalContext()
 
   return (
@@ -63,7 +65,7 @@ const Navbar = () => {
                   onClick={toggleDrawer('left', true)}
                   size='large'
                   edge='start'
-                  color='inherit'>
+                  color='trinary'>
                   <AppsOutlinedIcon />
                 </IconButton>
               </Tooltip>
@@ -81,10 +83,9 @@ const Navbar = () => {
                 To Do
               </Typography>
             </Box>
-            {/* search here */}
+
             <Paper
               component='form'
-              // onSubmit={submitHandler || ordinarySubmit}
               sx={{
                 borderRadius: '3px',
                 padding: '2px 4px',
@@ -92,7 +93,7 @@ const Navbar = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 maxWidth: '400px',
-
+                background: 'var(--bg-primary)',
                 width: { xs: '150px', sm: '100%' },
               }}>
               <Tooltip arrow title='search' placement='left'>
@@ -162,6 +163,11 @@ const Navbar = () => {
         </AppBar>
         <Drawers />
       </Box>
+      {toDoIsLoading && (
+        <div className='loader'>
+          <LinearProgress color='primary' />
+        </div>
+      )}
     </NavWrapper>
   )
 }

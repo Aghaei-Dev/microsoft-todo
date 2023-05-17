@@ -102,36 +102,42 @@ Global Styles
 ===============
 */
 .dark-mode {
-  --list-theme-skyblue-top: black;
+  --list-theme-skyblue-top: #333;
 
-  --bg-brand-hover: 'yellow';
-  --bg-brand: navy;
-  --font-color-brand: black;
-
-  --bg-brand-hover: black;
-  --bg-primary: #111;
-  --bg-secondary: #333;
-  --bg-tertiary: #555;
-  --bg-primary-accent: #111;
-  --bg-hover: #999;
-  --bg-hover-secondary: #222;
-  --bg-hover-tertiary: #111;
-  --bg-active: #eff6fc;
-  --bg-active-secondary: #111;
-  --bg-active-tertiary: #111;
-  --bg-separator: #111;
-  --bg-border: #111;
-  --bg-scrollbar: #111;
-  --bg-shadow: rgba(0, 0, 0, 0.1);
-  --bg-brand-hover-secondary: #8c93a5;
-  --bg-brand-secondary: #111;
-  --bg-brand-disable: #b7d7f6;
+  --list-theme-blue-primary-0: #78bafd;
+  --list-theme-blue-primary-10: #78bafd;
+  --list-theme-blue-primary-20: #78bafd;
+  --list-theme-blue-contrast-highlight-quick-fix: #78bafd;
+  --list-theme-blue-top: #78bafd;
+  --list-theme-blue-bottom: #78bafd;
+  --list-theme-blue-top-minimized: #78bafd;
+  --list-theme-blue-bottom-minimized: #78bafd;
+  --bg-primary: #252423;
+  --bg-secondary: #11100f;
+  --bg-tertiary: #252423;
+  --bg-primary-accent: rgba(32, 31, 30, 0.8);
+  --bg-hover: #323130;
+  --bg-hover-secondary: #292827;
+  --bg-hover-tertiary: #323130;
+  --bg-active: #3b3a39;
+  --bg-active-secondary: #3b3a39;
+  --bg-active-tertiary: #3b3a39;
+  --bg-separator: #484644;
+  --bg-border: #605e5c;
+  --bg-scrollbar: #484644;
+  --bg-brand: #296fe6;
+  --bg-brand-hover: #2461c8;
+  --bg-brand-secondary: #071327;
+  --bg-brand-hover-secondary: #1890f1;
+  --bg-brand-disable: #1b1a19;
   --font-color-primary: #fff;
-  --font-color-secondary: #f9f9f9;
-  --font-color-tertiary: #4d4b4a;
-  /* --font-color-warning: #a80000; */
-  /* --font-color-brand: #2564cf; */
+  --font-color-secondary: #a19f9d;
+  --font-color-tertiary: #dbdbdb;
+  --font-color-warning: #f1707b;
+  --font-color-brand: #78bafd;
   --font-color-disable: #a19f9d;
+  --bg-warning: #433519;
+  --bg-error: #4f2a0f;
 }
 
 *,
@@ -227,4 +233,10 @@ input {
   h4 {
     line-height: 1;
   }
+}
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
 }

@@ -43,11 +43,11 @@ export const Button = styled.button`
 `
 
 export const NavWrapper = styled.div`
+  position: relative;
   .icon-btn {
     border-radius: 0px;
     &:hover {
       background: var(--list-theme-skyblue-top);
-      color: var(--bg-primary);
     }
     &:active {
       background: var(--bg-brand-hover);
@@ -67,5 +67,12 @@ export const NavWrapper = styled.div`
     color: var(--bg-primary);
     border: 1px solid var(--bg-primary);
     cursor: pointer;
+  }
+  .loader {
+    width: 100%;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translate(-50%, -20%);
   }
 `

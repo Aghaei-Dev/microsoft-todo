@@ -8,13 +8,14 @@ import {
   DeleteOutlinedIcon,
 } from '../../assets/icons'
 import { useGlobalContext } from '../../context/context'
-import { Tooltip, Menu, MenuItem, Divider } from '@mui/material'
+import { Tooltip, Menu, Divider } from '@mui/material'
 const SingleNote = ({ text, isCompleted, isImportant, id, note }) => {
   const {
     handleRightSideBarOpen,
     setAsCompleted,
     setAsNotCompleted,
-    toggleImportant,
+    setAsNotImportant,
+    setAsImportant,
     findInformation,
     deleteHandler,
   } = useGlobalContext()
@@ -45,8 +46,7 @@ const SingleNote = ({ text, isCompleted, isImportant, id, note }) => {
           onClick={() => {
             isCompleted ? setAsNotCompleted(id) : setAsCompleted(id)
           }}
-          className='tick'
-        >
+          className='tick'>
           {isCompleted ? '' : '✓'}
         </span>
 
@@ -62,8 +62,7 @@ const SingleNote = ({ text, isCompleted, isImportant, id, note }) => {
           handleRightSideBarOpen()
           findInformation(id)
         }}
-        className='note'
-      >
+        className='note'>
         <div className={`${isCompleted ? 'text completed' : 'text'}`}>
           {text}
         </div>
@@ -74,14 +73,12 @@ const SingleNote = ({ text, isCompleted, isImportant, id, note }) => {
           isImportant ? 'remove importance' : 'mark task as important'
         }`}
         arrow
-        placement='top'
-      >
+        placement='top'>
         <div
           className='icon'
           onClick={() => {
-            toggleImportant(id)
-          }}
-        >
+            isImportant ? setAsNotImportant(id) : setAsImportant(id)
+          }}>
           {isImportant ? (
             <StarOutlinedIcon color='primary' fontSize='small' />
           ) : (
@@ -97,8 +94,7 @@ const SingleNote = ({ text, isCompleted, isImportant, id, note }) => {
           contextMenu !== null
             ? { top: contextMenu.mouseY, left: contextMenu.mouseX }
             : undefined
-        }
-      >
+        }>
         <MenuItemRow onClick={handleClose}>
           <span>
             <DeleteOutlinedIcon fontSize='small' />
@@ -107,10 +103,10 @@ const SingleNote = ({ text, isCompleted, isImportant, id, note }) => {
         </MenuItemRow>
         <MenuItemRow
           onClick={() => {
-            toggleImportant(id)
+            isImportant ? setAsNotImportant(id) : setAsImportant(id)
+
             handleClose()
-          }}
-        >
+          }}>
           <span>
             {isImportant ? (
               <StarOutlinedIcon color='primary' fontSize='small' />
@@ -124,8 +120,7 @@ const SingleNote = ({ text, isCompleted, isImportant, id, note }) => {
           onClick={() => {
             isCompleted ? setAsNotCompleted(id) : setAsCompleted(id)
             handleClose()
-          }}
-        >
+          }}>
           <span>
             {isCompleted ? (
               <CheckCircleIcon color='primary' fontSize='small' />
@@ -173,8 +168,7 @@ const SingleNote = ({ text, isCompleted, isImportant, id, note }) => {
           onClick={() => {
             handleClose()
             deleteHandler(id)
-          }}
-        >
+          }}>
           <span>
             <DeleteOutlinedIcon fontSize='small' />
           </span>

@@ -14,7 +14,7 @@ const Drawers = () => {
       sx={{
         maxHeight: height,
         overflow: 'auto',
-        width: `${anchor === 'left' ? '310px' : '330px'}`,
+        width: `${anchor === 'left' ? '310px' : '350px'}`,
         mt: `${anchor === 'left' ? '0rem' : '3.5rem'}`,
         p: `${
           anchor === 'right' && rightList === 'Settings'

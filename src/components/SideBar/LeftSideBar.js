@@ -8,8 +8,7 @@ import {
   IconButton,
   ListItem,
   ListItemButton,
-  ListItemIcon,
-  ListItemText,
+  InputBase,
   Tooltip,
 } from '@mui/material'
 
@@ -22,6 +21,7 @@ import {
   StarOutlineOutlinedIcon,
   CheckCircleOutlinedIcon,
   HomeOutlinedIcon,
+  AddOutlinedIcon,
 } from '../../assets/icons'
 
 import { FiveIconSideBare } from '../../assets/lists'
@@ -41,6 +41,7 @@ const LeftSideBar = () => {
     width,
     height,
     rightSideBarOpen,
+    allToDo,
   } = useGlobalContext()
 
   const sideMenu = [
@@ -52,7 +53,7 @@ const LeftSideBar = () => {
     {
       icon: <StarOutlineOutlinedIcon fontSize='small' />,
       text: 'important',
-      length: important.length,
+      length: important.filter((item) => item.isCompleted === false).length,
     },
     {
       icon: <CheckCircleOutlinedIcon fontSize='small' />,
@@ -62,7 +63,7 @@ const LeftSideBar = () => {
     {
       icon: <HomeOutlinedIcon fontSize='small' />,
       text: 'tasks',
-      length: notCompleted.length,
+      length: allToDo.length,
     },
   ]
   React.useEffect(() => {
@@ -102,12 +103,14 @@ const LeftSideBar = () => {
                 <ListItem
                   sx={{
                     borderLeft: `2px solid ${
-                      sidebarTitle === text ? 'var(--bg-brand-hover)' : '#fff'
+                      sidebarTitle === text
+                        ? 'var(--bg-brand-hover)'
+                        : 'var(--bg-border)'
                     }`,
                     background: ` ${
                       sidebarTitle === text
-                        ? 'var(  --bg-brand-secondary)'
-                        : '#fff'
+                        ? 'var(   --bg-border)'
+                        : 'var(  --bg-brand-primary)'
                     }`,
                   }}
                   disablePadding
@@ -137,10 +140,29 @@ const LeftSideBar = () => {
             })}
             <Divider variant='middle' sx={{ marginTop: '.6rem' }} />
             <ListItem sx={{ mt: 'auto' }} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>s</ListItemIcon>
-                <ListItemText primary='ali' />
-              </ListItemButton>
+              <div
+                className='new-list'
+                component='form'
+                sx={{
+                  padding: '2px 4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  width: '100%',
+                }}>
+                <IconButton
+                  disableRipple
+                  color='primary'
+                  sx={{ padding: '.8rem' }}
+                  aria-label='menu'>
+                  <AddOutlinedIcon fontSize='small' />
+                </IconButton>
+                <InputBase
+                  sx={{
+                    flex: 1,
+                  }}
+                  placeholder='New list'
+                />
+              </div>
             </ListItem>
           </List>
           <FiveBottomIcon>
@@ -156,9 +178,8 @@ const LeftSideBar = () => {
         </Drawer>
         <Main
           width={width}
-          //its here error
-          rightSideBarOpen={rightSideBarOpen}
           open={open}
+          rightsidebaropen={rightSideBarOpen ? `true` : undefined}
           sx={{
             flexGrow: 1,
             marginLeft: `${width < 800 ? '0rem' : ''}`,
@@ -179,7 +200,7 @@ export default LeftSideBar
 
 const Main = styled('main', {
   shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open, rightSideBarOpen, width }) => ({
+})(({ theme, open, rightsidebaropen, width }) => ({
   flexGrow: 1,
   padding: theme.spacing(3),
   transition: theme.transitions.create('margin', {
@@ -189,7 +210,7 @@ const Main = styled('main', {
 
   marginLeft: `-${!open && 270}px`,
 
-  marginRight: `-${!rightSideBarOpen && 345}px`,
+  marginRight: `-${!rightsidebaropen && 345}px`,
   margin: `0 ${width <= 800 && 0}  0 0`,
 
   ...(open && {
@@ -228,8 +249,18 @@ const SingleRow = styled('div')(() => ({
   },
 }))
 const Wrapper = styled('div')(({ height }) => ({
-  maxHeight: height - 50, //50 px for navbar
+  maxHeight: height - 55, // px for navbar
   overflow: 'auto',
+  '.new-list': {
+    marginTop: '.5em',
+    paddingLeft: '.75rem',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    ':hover': {
+      background: 'var(--bg-hover)',
+    },
+  },
 }))
 const FiveBottomIcon = styled('div')(() => ({
   display: 'flex',
@@ -243,7 +274,7 @@ const FiveBottomIcon = styled('div')(() => ({
     display: 'grid',
     placeItems: 'center',
     cursor: 'pointer',
-    color: 'var(--font-color-secondary)',
+    color: 'var(--font-color-primary)',
 
     ':hover': {
       background: 'var(--bg-hover)',

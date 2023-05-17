@@ -1,5 +1,6 @@
 import React from 'react'
-import styled from 'styled-components'
+import { styled } from '@mui/material/styles'
+
 import { Button, Box, CircularProgress } from '@mui/material'
 
 import { ClearOutlinedIcon } from '../../assets/icons'
@@ -9,7 +10,7 @@ import AntSwitch from '../AntSwitch/AntSwitch'
 import { newsBoxes, bottomOfNewsBoxes, setting } from '../../assets/lists'
 
 const RightList = () => {
-  const { rightList, toggleDrawer, width, height } = useGlobalContext()
+  const { rightList, toggleDrawer, height } = useGlobalContext()
 
   return (
     <Wrapper height={height}>
@@ -96,36 +97,37 @@ const Setting = () => {
     </WrapperSetting>
   )
 }
-const WrapperSetting = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  div {
-    h3 {
-      line-height: 0;
-      padding-top: 0.5rem;
-      font-size: 1.2rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-    }
-    div {
-      .switch-container {
-        margin-bottom: 1rem;
-        p {
-          line-height: 1rem;
-          color: var(--font-color-primary);
-          margin-bottom: 0.5rem;
-        }
-        div {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 22%;
-        }
-      }
-    }
-  }
-`
+
+const WrapperSetting = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '2rem',
+  div: {
+    h3: {
+      lineHeight: '0',
+      paddingTop: '0.5rem',
+      fontSize: '1.2rem',
+      fontWeight: '600',
+      marginBottom: '1.5rem',
+    },
+    div: {
+      ' .switch-container': {
+        marginBottom: '1rem',
+        p: {
+          lineHeight: '1rem',
+          color: ' var(--font-color-primary)',
+          marginBottom: '0.5rem',
+        },
+        div: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: ' space-between',
+          width: '22%',
+        },
+      },
+    },
+  },
+}))
 
 //Help and Feedback section
 const Help = () => {
@@ -179,40 +181,44 @@ const Help = () => {
     </WrapperHelp>
   )
 }
-const WrapperHelp = styled.div`
-  p {
-    color: var(--list-theme-blue-primary-0);
-    cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-  span {
-    padding-left: 0.4rem;
-    font-size: 0.9rem;
-  }
-`
+const WrapperHelp = styled('div')(() => ({
+  p: {
+    color: ' var(--list-theme-blue-primary-0)',
+    cursor: 'pointer',
+    ':hover': {
+      textDecoration: 'underline',
+    },
+  },
+  span: {
+    paddingLeft: ' 0.4rem',
+    fontSize: ' 0.9rem',
+  },
+}))
 
 //News section
 const News = () => {
+  const { height } = useGlobalContext()
+
   return (
-    <WrapperNews>
-      {newsBoxes.map((item, index) => {
-        return (
-          <article key={index}>
-            <img src={item.img} alt={item.btnText} />
-            <div className='text'>
-              <p>{item.text}</p>
-              <Button
-                color='secondary'
-                sx={{ fontSize: '.8rem' }}
-                variant='outlined'>
-                {item.btnText}
-              </Button>
-            </div>
-          </article>
-        )
-      })}
+    <WrapperNews height={height}>
+      <div>
+        {newsBoxes.map((item, index) => {
+          return (
+            <article key={index}>
+              <img src={item.img} alt={item.btnText} />
+              <div className='text'>
+                <p>{item.text}</p>
+                <Button
+                  color='secondary'
+                  sx={{ fontSize: '.8rem' }}
+                  variant='outlined'>
+                  {item.btnText}
+                </Button>
+              </div>
+            </article>
+          )
+        })}
+      </div>
       <div className='download-app'>
         <div>download the app .</div>
         <div className='img-container'>
@@ -224,46 +230,46 @@ const News = () => {
     </WrapperNews>
   )
 }
-const WrapperNews = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: column;
-  height: 84vh;
-  gap: 1rem;
-  article {
-    box-shadow: var(--light-shadow);
-    background: var(--bg-secondary);
-    img {
-      width: 100%;
-    }
-    .text {
-      padding: 1rem 1.5rem;
-      padding-bottom: 1rem;
-      p {
-        font-size: 1rem;
-      }
-    }
-  }
-  .download-app {
-    width: 100%;
-    /* margin-top: 5rem; */
-    padding: 0.5rem 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid var(--bg-border);
-    font-size: 0.8rem;
-    .img-container {
-      width: 50%;
-      display: flex;
-      justify-content: end;
-      gap: 0.5rem;
-      align-items: center;
-      img {
-        cursor: pointer;
-        width: 15%;
-      }
-    }
-  }
-`
+
+const WrapperNews = styled('div')(({ height }) => ({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  flexDirection: 'column',
+  height: height - 150,
+  article: {
+    boxShadow: 'var(--light-shadow)',
+    background: 'var(--bg-secondary)',
+    marginBottom: '2rem',
+    img: {
+      width: '100%',
+    },
+    '.text ': {
+      padding: ' 1rem 1.5rem',
+      paddingBottom: '1rem',
+      p: {
+        fontSize: '1rem',
+      },
+    },
+  },
+  '.download-app ': {
+    width: '100%',
+    padding: '0.5rem 1rem',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    border: ' 1px solid var(--bg-border)',
+    fontSize: ' 0.8rem',
+    '.img-container': {
+      width: ' 50%',
+      display: 'flex',
+      justifyContent: 'end',
+      gap: '0.5rem',
+      alignItems: 'center',
+      img: {
+        cursor: 'pointer',
+        width: '15%',
+      },
+    },
+  },
+}))

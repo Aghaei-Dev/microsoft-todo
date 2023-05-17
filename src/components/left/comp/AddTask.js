@@ -97,7 +97,6 @@ const Wrapper = styled.div`
     cursor: pointer;
     padding: 0.2rem !important;
     &:disabled {
-      border: 1px solid #c24d4d;
       color: #a80000;
     }
   }

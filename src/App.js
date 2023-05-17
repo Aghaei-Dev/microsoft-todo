@@ -19,6 +19,9 @@ function App() {
       secondary: {
         main: '#292827',
       },
+      trinary: {
+        main: '#fff',
+      },
       danger: {
         main: '#a80000',
       },

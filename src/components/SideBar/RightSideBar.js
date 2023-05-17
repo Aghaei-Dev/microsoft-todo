@@ -33,7 +33,8 @@ const RightSideBar = () => {
     height,
     setAsCompleted,
     setAsNotCompleted,
-    toggleImportant,
+    setAsImportant,
+    setAsNotImportant,
     deleteHandler,
   } = useGlobalContext()
   const textAreaRef = useRef()
@@ -46,11 +47,6 @@ const RightSideBar = () => {
     }, 0)
   }
 
-  const [value, setValue] = React.useState('')
-  const noteHandler = (e) => {
-    information.note = value
-    setValue(e.target.value)
-  }
   return (
     <Wrapper height={height}>
       <Box sx={{ display: 'flex' }}>
@@ -115,7 +111,9 @@ const RightSideBar = () => {
                     <div
                       className='icon'
                       onClick={() => {
-                        toggleImportant(information?.id)
+                        information?.isImportant
+                          ? setAsNotImportant(information?.id)
+                          : setAsImportant(information?.id)
                       }}>
                       {information?.isImportant ? (
                         <StarOutlinedIcon color='primary' fontSize='small' />
@@ -164,12 +162,11 @@ const RightSideBar = () => {
                     className='textarea'
                     placeholder='Add note'
                     ref={textAreaRef}
-                    onKeyDown={autosize}
-                    value={information?.note}
-                    // value={value}
-                    onChange={(e) => {
-                      noteHandler(e)
-                    }}></textarea>
+                    // value={information?.note}
+                    // onSubmit={(e) => {
+                    // noteHandler(information?.id, e.target.value)
+                    // }}
+                    onKeyDown={autosize}></textarea>
                 </div>
               </div>
               <div className='bottom-row'>
@@ -178,7 +175,9 @@ const RightSideBar = () => {
                     <ExitToAppOutlinedIcon fontSize='small' />
                   </IconButton>
                 </Tooltip>
-                <span>created {moment(Number(information?.id)).fromNow()}</span>
+                <span>
+                  created {moment(Number(information?.createdAt)).fromNow()}
+                </span>
                 <Tooltip arrow title='delete task' placement='top'>
                   <IconButton
                     onClick={() => {

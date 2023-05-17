@@ -7,33 +7,6 @@ export const capitalMaker = (string) => {
     .join(' ')
 }
 
-export const getNotCompleted = () => {
-  let notCompleted = localStorage.getItem('notCompleted')
-
-  if (notCompleted) {
-    return JSON.parse(localStorage.getItem('notCompleted'))
-  } else {
-    return []
-  }
-}
-export const getCompleted = () => {
-  let completed = localStorage.getItem('completed')
-
-  if (completed) {
-    return JSON.parse(localStorage.getItem('completed'))
-  } else {
-    return []
-  }
-}
-export const getImportant = () => {
-  let important = localStorage.getItem('important')
-
-  if (important) {
-    return JSON.parse(localStorage.getItem('important'))
-  } else {
-    return []
-  }
-}
 export const getSidebarTitle = () => {
   let sidebarTitle = localStorage.getItem('sidebarTitle')
 

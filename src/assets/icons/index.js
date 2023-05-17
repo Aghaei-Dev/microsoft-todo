@@ -34,7 +34,7 @@ import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined'
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined'
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined'
-
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 
 export {
   MenuOutlinedIcon,
@@ -73,4 +73,5 @@ export {
   DeleteOutlinedIcon,
   AttachFileOutlinedIcon,
   LocalOfferOutlinedIcon,
+  AddOutlinedIcon,
 }

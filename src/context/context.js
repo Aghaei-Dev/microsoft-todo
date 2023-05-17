@@ -3,14 +3,17 @@ import React, { useState, useEffect, useContext } from 'react'
 import useSound from 'use-sound'
 import sound from '../assets/sound/doneSound.mp3'
 // import axios from 'axios'
-
+import { db } from '../firebase'
 import {
-  getNotCompleted,
-  getDarkMode,
-  getCompleted,
-  getImportant,
-  getSidebarTitle,
-} from '../func/functions'
+  collection,
+  addDoc,
+  doc,
+  updateDoc,
+  deleteDoc,
+  getDocs,
+} from 'firebase/firestore'
+
+import { getDarkMode, getSidebarTitle } from '../func/functions'
 const ToDoContext = React.createContext()
 
 const MicrosoftTodoProvider = ({ children }) => {
@@ -77,102 +80,93 @@ const MicrosoftTodoProvider = ({ children }) => {
   const handleRightSideBarClose = () => {
     setRightSideBarOpen(false)
   }
-  const [information, setInformation] = useState()
 
-  const findInformation = (id) => {
-    const specificItem = all.find((item) => item.id === id)
-    // return specificItem.text
-    setInformation(specificItem)
-  }
   //add todo
   const [inputText, setInputText] = useState('')
-  const [notCompleted, setNotCompleted] = useState(getNotCompleted())
-  const [completed, setCompleted] = useState(getCompleted())
-  const [important, setImportant] = useState(getImportant())
-  const all = [...notCompleted, ...completed]
+  const [notCompleted, setNotCompleted] = useState([])
+  const [completed, setCompleted] = useState([])
+  const [important, setImportant] = useState([])
 
-  const ordinarySubmit = (e) => {
+  const [allToDo, setAllToDo] = useState([])
+  const [information, setInformation] = useState({})
+
+  const [toDoIsLoading, setToDoIsLoading] = useState(true)
+
+  const todoCollectionRef = collection(db, 'ToDo')
+
+  //add todo to firebase
+  const submitHandler = async (e, special) => {
     e.preventDefault()
     if (inputText.length !== 0) {
-      setNotCompleted([
-        {
-          id: new Date().getTime().toString(),
-          text: inputText,
-          isCompleted: false,
-          isImportant: false,
-          note: '',
-        },
-        ...notCompleted,
-      ])
+      setInputText('')
+      await addDoc(todoCollectionRef, {
+        text: inputText,
+        isCompleted: false,
+        isImportant: special ? true : false,
+        note: '',
+        createdAt: new Date().getTime().toString(),
+      })
+      getTodo()
     }
-    setInputText('')
-  }
-  const specialSubmit = (e) => {
-    e.preventDefault()
-    if (inputText.length !== 0) {
-      setNotCompleted([
-        {
-          id: new Date().getTime().toString(),
-          text: inputText,
-          isCompleted: false,
-          isImportant: true,
-        },
-        ...notCompleted,
-      ])
-    }
-    setInputText('')
   }
 
-  const setAsCompleted = (id) => {
-    const newNotCompleted = notCompleted.filter((item) => item.id !== id)
-    const specificItem = notCompleted.find((item) => item.id === id)
-    specificItem.isCompleted = true
-    setNotCompleted(newNotCompleted)
-    setCompleted([specificItem, ...completed])
+  //get todo from firebase
+  const getTodo = async () => {
+    setToDoIsLoading(true)
+    const data = await getDocs(todoCollectionRef)
+
+    const ToDos = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }))
+    setAllToDo(ToDos)
+    setNotCompleted(ToDos.filter((item) => item.isCompleted === false))
+    setCompleted(ToDos.filter((item) => item.isCompleted === true))
+    setImportant(ToDos.filter((item) => item.isImportant === true))
+    setToDoIsLoading(false)
+  }
+
+  const findInformation = async (id) => {
+    const specificItem = allToDo.find((item) => item.id === id)
+    setInformation(specificItem)
+
+    getTodo()
+  }
+  const setAsCompleted = async (id) => {
+    const specificItem = doc(db, 'ToDo', id)
+    await updateDoc(specificItem, { isCompleted: true })
     play()
+    getTodo()
   }
-  const setAsNotCompleted = (id) => {
-    const newCompleted = completed.filter((item) => item.id !== id)
-    const specificItem = completed.find((item) => item.id === id)
-    specificItem.isCompleted = false
-    setCompleted(newCompleted)
-    setNotCompleted([specificItem, ...notCompleted])
-  }
-
-  const toggleImportant = (id) => {
-    const newArray = all.filter((item) => item.id !== id)
-
-    const specificItem = all.find((item) => item.id === id)
-    specificItem.isImportant = !specificItem.isImportant
-    const NotCompletedItems = newArray.filter(
-      (item) => item.isCompleted === false
-    )
-    const completedItems = newArray.filter((item) => item.isCompleted === true)
-
-    if (specificItem.isCompleted) {
-      if (specificItem.isImportant) {
-        setCompleted([specificItem, ...completedItems])
-      } else {
-        setCompleted([...completedItems, specificItem])
-      }
-    } else {
-      if (specificItem.isImportant) {
-        setNotCompleted([specificItem, ...NotCompletedItems])
-      } else {
-        setNotCompleted([...NotCompletedItems, specificItem])
-      }
-    }
-    setImportant([specificItem, ...important])
+  const setAsNotCompleted = async (id) => {
+    const specificItem = doc(db, 'ToDo', id)
+    await updateDoc(specificItem, { isCompleted: false })
+    getTodo()
   }
 
-  const deleteHandler = (id) => {
-    const newArray = all.filter((item) => item.id !== id)
-    const completedItems = newArray.filter((item) => item.isCompleted === true)
-    const NotCompletedItems = newArray.filter(
-      (item) => item.isCompleted === false
-    )
-    setCompleted(completedItems)
-    setNotCompleted(NotCompletedItems)
+  const setAsImportant = async (id) => {
+    const specificItem = doc(db, 'ToDo', id)
+    await updateDoc(specificItem, { isImportant: true })
+    getTodo()
+  }
+  const setAsNotImportant = async (id) => {
+    const specificItem = doc(db, 'ToDo', id)
+    await updateDoc(specificItem, { isImportant: false })
+    getTodo()
+  }
+
+  const deleteHandler = async (id) => {
+    const specificItem = doc(db, 'ToDo', id)
+    await deleteDoc(specificItem)
+    getTodo()
+  }
+
+  //most develop
+
+  const noteHandler = async (id, text) => {
+    const specificItem = doc(db, 'ToDo', id)
+    await updateDoc(specificItem, { note: text })
+    getTodo()
   }
 
   const clearInputHandler = () => {
@@ -195,14 +189,9 @@ const MicrosoftTodoProvider = ({ children }) => {
     }
   })
 
-  // set to local storage
   useEffect(() => {
-    localStorage.setItem('notCompleted', JSON.stringify(notCompleted))
-    localStorage.setItem('completed', JSON.stringify(completed))
-    localStorage.setItem('important', JSON.stringify(important))
-
     localStorage.setItem('sidebarTitle', JSON.stringify(sidebarTitle))
-  }, [notCompleted, completed, important, sidebarTitle])
+  }, [sidebarTitle])
 
   //set dark mode
   useEffect(() => {
@@ -214,6 +203,11 @@ const MicrosoftTodoProvider = ({ children }) => {
     localStorage.setItem('darkMode', isDarkMode)
   }, [isDarkMode])
 
+  //get todo initially
+  useEffect(() => {
+    getTodo()
+    // eslint-disable-next-line
+  }, [])
   return (
     <ToDoContext.Provider
       value={{
@@ -236,16 +230,16 @@ const MicrosoftTodoProvider = ({ children }) => {
         handleDrawerClose,
         notCompleted,
         completed,
-        ordinarySubmit,
+        submitHandler,
         inputText,
         setInputText,
         clearInputHandler,
         setAsCompleted,
         setAsNotCompleted,
-        toggleImportant,
+        setAsImportant,
+        setAsNotImportant,
         important,
         play,
-        specialSubmit,
         width,
         height,
         mainSearchValue,
@@ -256,6 +250,9 @@ const MicrosoftTodoProvider = ({ children }) => {
         findInformation,
         information,
         deleteHandler,
+        noteHandler,
+        toDoIsLoading,
+        allToDo,
       }}>
       {children}
     </ToDoContext.Provider>

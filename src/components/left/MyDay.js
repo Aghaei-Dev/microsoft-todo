@@ -8,8 +8,10 @@ import { AddTask } from './comp'
 import { Wrapper } from '../../assets/style/StyledComponent'
 import CompletedRow from '../Todo/CompletedRow'
 import { Input } from '../'
-import Sort from '../../Sort'
+// import Sort from '../../Sort'
+import { useGlobalContext } from '../../context/context'
 const MyDay = () => {
+  const { submitHandler, completed, notCompleted } = useGlobalContext()
   return (
     <>
       <Wrapper>
@@ -17,11 +19,22 @@ const MyDay = () => {
           title='my day'
           logo={<LightModeOutlinedIcon fontSize='small' />}
         />
-        <Input />
+        <Input
+          submitHandler={(e) => {
+            submitHandler(e, false)
+          }}
+        />
 
         <AddTask />
-        <CompletedRow title='completed' showNotCompleted showCompleted />
-        {/* <Sort /> */}
+        <CompletedRow
+          listInTop={notCompleted}
+          listInAccordion={completed}
+          listInAccordionTitle='completed'
+          listInTopTitle='notCompleted'
+          title='completed'
+          showNotCompleted
+          showCompleted
+        />
       </Wrapper>
     </>
   )

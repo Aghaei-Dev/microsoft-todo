@@ -44,7 +44,7 @@ const Wrapper = styled.section`
     max-width: 440px;
     width: calc(100% - 40px);
     height: 40vh;
-    background: var(--bg-primary);
+    background: #fff;
     box-shadow: 0 0 20px var(--bg-shadow);
     padding: 2rem;
     display: flex;
@@ -59,7 +59,7 @@ const Wrapper = styled.section`
     }
     p {
       font-size: 1rem;
-      color: var(--font-color-secondary);
+      color: #605e5c;
     }
     > div {
       display: flex;

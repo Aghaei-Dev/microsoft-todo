@@ -1,8 +1,10 @@
 import React from 'react'
-import { LeftSideBar, Loading, RightSideBar } from '../components'
+import { LeftSideBar, Loading } from '../components'
 
 import { useGlobalContext } from '../context/context'
 import Navbar from '../components/NavBar/Navbar'
+
+
 
 const Dashboard = () => {
   const { isLoading } = useGlobalContext()
@@ -13,7 +15,6 @@ const Dashboard = () => {
     <>
       <Navbar />
       <LeftSideBar />
-      {/* <RightSideBar /> */}
     </>
   )
 }

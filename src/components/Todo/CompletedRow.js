@@ -10,22 +10,27 @@ import SingleNote from './SingleNote'
 
 import { ChevronRightIcon } from '../../assets/icons'
 
-import { useGlobalContext } from '../../context/context'
-
 const CompletedRow = ({
   title,
   showNotCompleted,
   showCompleted,
   listInAccordion,
-}) => {
-  const { notCompleted, completed } = useGlobalContext()
+  listInAccordionTitle,
+  listInTopTitle,
 
+  listInTop,
+}) => {
+  const list =
+    listInTopTitle === 'important'
+      ? listInTop.filter((item) => item.isCompleted !== true)
+      : listInTop
   return (
     <Wrapper>
-      {showNotCompleted && notCompleted.length > 0 && (
+      {showNotCompleted && list.length > 0 && (
         <div className='not-completed'>
-          {notCompleted.map((item) => {
+          {list.map((item) => {
             const { id, text, isCompleted, isImportant, note } = item
+
             return (
               <SingleNote
                 id={id}
@@ -39,11 +44,12 @@ const CompletedRow = ({
           })}
         </div>
       )}
-      {showCompleted && completed.length > 0 && (
+      {showCompleted && listInAccordion.length > 0 && (
         <CompletedList
           title={title}
           showCompleted={showCompleted}
           listInAccordion={listInAccordion}
+          listInAccordionTitle={listInAccordionTitle}
         />
       )}
       <Divider />
@@ -60,33 +66,20 @@ const Wrapper = styled1.div`
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: .5rem;
   }
 `
 
-export function CompletedList({ title, showCompleted, listInAccordion }) {
-  const AccordionSummary = styled((props) => (
-    <MuiAccordionSummary
-      expandIcon={<ChevronRightIcon sx={{ fontSize: '0.9rem' }} />}
-      {...props}
-    />
-  ))(({ theme }) => ({
-    flexDirection: 'row-reverse',
-    paddingLeft: '.5rem',
-    '& .MuiAccordionSummary-content': {
-      gap: '1.5rem',
-      fontWeight: '500',
-      fontSize: '.9rem',
-    },
-    '& .MuiAccordionSummary-expandIconWrapper': {
-      marginRight: '1rem',
-    },
-    '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
-      transform: 'rotate(90deg)',
-    },
-  }))
-
-  const { completed } = useGlobalContext()
+export function CompletedList({
+  title,
+  listInAccordionTitle,
+  showCompleted,
+  listInAccordion,
+}) {
+  const list =
+    listInAccordionTitle === 'important'
+      ? listInAccordion.filter((item) => item.isCompleted === true)
+      : listInAccordion
   return (
     <div>
       <Accordion
@@ -98,7 +91,7 @@ export function CompletedList({ title, showCompleted, listInAccordion }) {
         }}>
         <AccordionSummary expandIcon={<ChevronRightIcon />}>
           <div>{title} </div>
-          <div>{completed.length}</div>
+          <div>{list.length}</div>
         </AccordionSummary>
 
         <AccordionDetails
@@ -108,24 +101,44 @@ export function CompletedList({ title, showCompleted, listInAccordion }) {
             justifyContent: 'center',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: '1rem',
+            gap: '.5rem',
           }}>
-          {listInAccordion ||
-            completed.map((item) => {
-              const { id, text, isCompleted, isImportant, note } = item
-              return (
-                <SingleNote
-                  id={id}
-                  isImportant={isImportant}
-                  isCompleted={isCompleted}
-                  key={id}
-                  text={text}
-                  note={note}
-                />
-              )
-            })}
+          {list.map((item) => {
+            const { id, text, isCompleted, isImportant, note } = item
+
+            return (
+              <SingleNote
+                id={id}
+                isImportant={isImportant}
+                isCompleted={isCompleted}
+                key={id}
+                text={text}
+                note={note}
+              />
+            )
+          })}
         </AccordionDetails>
       </Accordion>
     </div>
   )
 }
+const AccordionSummary = styled((props) => (
+  <MuiAccordionSummary
+    expandIcon={<ChevronRightIcon sx={{ fontSize: '0.9rem' }} />}
+    {...props}
+  />
+))(() => ({
+  flexDirection: 'row-reverse',
+  paddingLeft: '.5rem',
+  '& .MuiAccordionSummary-content': {
+    gap: '1.5rem',
+    fontWeight: '500',
+    fontSize: '.9rem',
+  },
+  '& .MuiAccordionSummary-expandIconWrapper': {
+    marginRight: '1rem',
+  },
+  '& .MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
+    transform: 'rotate(90deg)',
+  },
+}))

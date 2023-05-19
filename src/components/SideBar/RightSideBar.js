@@ -176,7 +176,13 @@ const RightSideBar = () => {
                   </IconButton>
                 </Tooltip>
                 <span>
-                  created {moment(Number(information?.createdAt)).fromNow()}
+                  {information?.isCompleted
+                    ? ` Completed ${moment(
+                        Number(information?.doneAt)
+                      ).fromNow()}`
+                    : `Created ${moment(
+                        Number(information?.createdAt)
+                      ).fromNow()}`}
                 </span>
                 <Tooltip arrow title='delete task' placement='top'>
                   <IconButton
@@ -310,16 +316,6 @@ const InformationWrapper = styled('div')(({ height }) => ({
     },
   },
 }))
-
-// const DrawerHeader = styled('div')(({ theme }) => ({
-//   display: 'flex',
-//   alignItems: 'center',
-//   padding: theme.spacing(0, 1),
-//   // necessary for content to be below app bar
-//   ...theme.mixins.toolbar,
-//   justifyContent: 'flex-end',
-// }))
-
 const Wrapper = styled('div')(({ height }) => ({
   maxHeight: height - 50, //50 px for navbar
   overflow: 'auto',

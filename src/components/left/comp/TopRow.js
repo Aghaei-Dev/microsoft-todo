@@ -119,7 +119,6 @@ const Wrapper = styled.div`
   .title-date {
     position: relative;
     div {
-      /* background: red; */
       width: 200%;
       position: absolute;
       top: 85%;
@@ -130,15 +129,13 @@ const Wrapper = styled.div`
       font-weight: 300;
     }
   }
-  /* ==============================
-  In here padding must deleted
-  ============================== */
+
   div.last-items {
     > div {
-      padding: 0.5rem;
       cursor: pointer;
       font-size: 0.8rem;
       font-weight: 300;
+
       color: var(--font-color-secondary) !important;
       &:hover {
         background-color: var(--bg-active);
@@ -149,7 +146,8 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background: red; */
+    padding: 0.3rem;
+
     color: var(--font-color-secondary) !important;
     position: relative;
     cursor: pointer;
@@ -205,10 +203,22 @@ const optionsValueInOtherPage = [
   { icon: <PrintOutlinedIcon />, title: 'print' },
 ]
 const sortValue = [
-  { icon: <StarBorderOutlinedIcon />, title: 'importance' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'due date' },
-  { icon: <SwapVertOutlinedIcon />, title: 'alphabetically' },
-  { icon: <MoreTimeOutlinedIcon />, title: 'creation date' },
+  {
+    icon: <StarBorderOutlinedIcon />,
+    title: 'importance',
+  },
+  {
+    icon: <CalendarMonthOutlinedIcon />,
+    title: 'due date',
+  },
+  {
+    icon: <SwapVertOutlinedIcon />,
+    title: 'alphabetically',
+  },
+  {
+    icon: <MoreTimeOutlinedIcon />,
+    title: 'creation date',
+  },
 ]
 const sortValueInImportantPage = [
   { icon: <CalendarMonthOutlinedIcon />, title: 'due date' },
@@ -231,7 +241,6 @@ export default function MenuListComposition({
   array,
 }) {
   const [open, setOpen] = React.useState(false)
-
   const anchorRef = React.useRef(null)
 
   const handleToggle = () => {
@@ -242,20 +251,9 @@ export default function MenuListComposition({
     if (anchorRef.current && anchorRef.current.contains(event.target)) {
       return
     }
-
     setOpen(false)
   }
 
-  // function handleListKeyDown(event) {
-  //   if (event.key === 'Tab') {
-  //     event.preventDefault()
-  //     setOpen(false)
-  //   } else if (event.key === 'Escape') {
-  //     setOpen(false)
-  //   }
-  // }
-
-  // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open)
   React.useEffect(() => {
     if (prevOpen.current === true && open === false) {

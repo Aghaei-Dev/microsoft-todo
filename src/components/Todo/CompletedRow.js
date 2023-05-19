@@ -1,5 +1,4 @@
 import React from 'react'
-import styled1 from 'styled-components'
 
 import { styled } from '@mui/material/styles'
 
@@ -10,6 +9,8 @@ import SingleNote from './SingleNote'
 
 import { ChevronRightIcon } from '../../assets/icons'
 
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+
 const CompletedRow = ({
   title,
   showNotCompleted,
@@ -17,17 +18,20 @@ const CompletedRow = ({
   listInAccordion,
   listInAccordionTitle,
   listInTopTitle,
-
   listInTop,
 }) => {
   const list =
     listInTopTitle === 'important'
       ? listInTop.filter((item) => item.isCompleted !== true)
       : listInTop
+
+  //animate
+  const [parent, enableAnimations] = useAutoAnimate()
+
   return (
     <Wrapper>
       {showNotCompleted && list.length > 0 && (
-        <div className='not-completed'>
+        <div className='not-completed' ref={parent}>
           {list.map((item) => {
             const { id, text, isCompleted, isImportant, note } = item
 
@@ -46,6 +50,7 @@ const CompletedRow = ({
       )}
       {showCompleted && listInAccordion.length > 0 && (
         <CompletedList
+          forwardRef={parent}
           title={title}
           showCompleted={showCompleted}
           listInAccordion={listInAccordion}
@@ -59,16 +64,18 @@ const CompletedRow = ({
 
 export default CompletedRow
 
-const Wrapper = styled1.div`
-  .not-completed{
-    padding:1rem 0;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    gap: .5rem;
-  }
-`
+const Wrapper = styled('div')(() => ({
+  width: '100%',
+  overflow: 'hidden',
+  '.not-completed': {
+    padding: '1rem 0',
+    display: 'flex',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '.5rem',
+  },
+}))
 
 export function CompletedList({
   title,

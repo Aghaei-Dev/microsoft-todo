@@ -22,7 +22,6 @@ export default function CustomizedInputBase({ submitHandler }) {
     setShowBottomRow(false)
   }
   useEffect(() => {
-    console.log('ali')
     const timeout = setTimeout(() => closer(), 5000)
 
     return () => clearTimeout(timeout)
@@ -37,6 +36,7 @@ export default function CustomizedInputBase({ submitHandler }) {
         display: 'flex',
         alignItems: 'center',
         width: '100%',
+        background: 'var(--bg-primary)',
         boxShadow: showBottomRow ? '' : 'var(--light-shadow)',
       }}>
       <IconButton
@@ -87,6 +87,7 @@ const Input = styled(InputBase)(() => ({
   flex: 1,
   textTransform: 'capitalize!Important',
   color: 'var(--font-color-primary)',
+
   input: {
     textTransform: 'none!important',
     '::placeholder': {

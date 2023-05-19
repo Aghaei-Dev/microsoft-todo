@@ -26,3 +26,29 @@ export const getDarkMode = () => {
     return ''
   }
 }
+
+export const sortAlphabetically = (a, b) => {
+  const textA = a.text.toUpperCase()
+  const textB = b.text.toUpperCase()
+  if (textA < textB) {
+    return -1
+  }
+  if (textA > textB) {
+    return 1
+  }
+  return 0
+}
+export const sortCreationDate = (a, b) => {
+  const textA = a.createdAt
+  const textB = b.createdAt
+  if (textA < textB) {
+    return -1
+  }
+  if (textA > textB) {
+    return 1
+  }
+  return 0
+}
+export const sortIsImportant = (a, b) => {
+  return a.isImportant === b.isImportant ? 0 : a.isImportant ? -1 : 1
+}

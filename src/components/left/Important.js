@@ -9,7 +9,7 @@ import CompletedRow from '../Todo/CompletedRow'
 import { useGlobalContext } from '../../context/context'
 import { Input } from '..'
 const Important = () => {
-  const { important, submitHandler } = useGlobalContext()
+  const { important, submitHandler, showBottomRow } = useGlobalContext()
   return (
     <Wrapper>
       <PageTopRow title='important' logo={<StarOutlineOutlinedIcon />} />
@@ -18,7 +18,8 @@ const Important = () => {
           submitHandler(e, true)
         }}
       />
-      <AddTask />
+      {showBottomRow && <AddTask />}
+
       <CompletedRow
         listInTop={important}
         listInTopTitle='important'

@@ -12,7 +12,13 @@ import {
   getDocs,
 } from 'firebase/firestore'
 
-import { getDarkMode, getSidebarTitle } from '../func/functions'
+import {
+  getDarkMode,
+  getSidebarTitle,
+  sortCreationDate,
+  sortAlphabetically,
+  sortIsImportant,
+} from '../func/functions'
 const ToDoContext = React.createContext()
 
 const MicrosoftTodoProvider = ({ children }) => {
@@ -83,11 +89,11 @@ const MicrosoftTodoProvider = ({ children }) => {
   const [notCompleted, setNotCompleted] = useState([])
   const [completed, setCompleted] = useState([])
   const [important, setImportant] = useState([])
-
   const [allToDo, setAllToDo] = useState([])
   const [information, setInformation] = useState({})
-
   const [toDoIsLoading, setToDoIsLoading] = useState(true)
+
+  const [sortTitle, setSortTitle] = useState('')
 
   const todoCollectionRef = collection(db, 'ToDo')
 
@@ -102,6 +108,7 @@ const MicrosoftTodoProvider = ({ children }) => {
         isImportant: special ? true : false,
         note: '',
         createdAt: new Date().getTime().toString(),
+        doneAt: '',
       })
       getTodo()
     }
@@ -116,33 +123,35 @@ const MicrosoftTodoProvider = ({ children }) => {
       ...doc.data(),
       id: doc.id,
     }))
-    setAllToDo(ToDos)
+    if (sortTitle === 'importance') {
+      setAllToDo(ToDos.sort(sortIsImportant))
+    } else if (sortTitle === 'alphabetically') {
+      setAllToDo(ToDos.sort(sortAlphabetically))
+    } else if (sortTitle === 'creationDate') {
+      setAllToDo(ToDos.sort(sortCreationDate))
+    } else {
+      setAllToDo(ToDos)
+    }
     setNotCompleted(ToDos.filter((item) => item.isCompleted === false))
     setCompleted(ToDos.filter((item) => item.isCompleted === true))
     setImportant(ToDos.filter((item) => item.isImportant === true))
     setToDoIsLoading(false)
   }
 
-  //have problems
-  const findInformation = async (id) => {
-    const specificItem = allToDo.find((item) => item.id === id)
-    setInformation(specificItem)
-
-    getTodo()
-  }
-
   const setAsCompleted = async (id) => {
     const specificItem = doc(db, 'ToDo', id)
-    await updateDoc(specificItem, { isCompleted: true })
+    await updateDoc(specificItem, {
+      isCompleted: true,
+      doneAt: new Date().getTime().toString(),
+    })
     play()
     getTodo()
   }
   const setAsNotCompleted = async (id) => {
     const specificItem = doc(db, 'ToDo', id)
-    await updateDoc(specificItem, { isCompleted: false })
+    await updateDoc(specificItem, { isCompleted: false, doneAt: '' })
     getTodo()
   }
-
   const setAsImportant = async (id) => {
     const specificItem = doc(db, 'ToDo', id)
     await updateDoc(specificItem, { isImportant: true })
@@ -153,15 +162,19 @@ const MicrosoftTodoProvider = ({ children }) => {
     await updateDoc(specificItem, { isImportant: false })
     getTodo()
   }
-
   const deleteHandler = async (id) => {
     const specificItem = doc(db, 'ToDo', id)
     await deleteDoc(specificItem)
     getTodo()
   }
 
-  //most develop
+  //have problems
+  const findInformation = async (id) => {
+    const specificItem = allToDo.find((item) => item.id === id)
+    setInformation(specificItem)
 
+    getTodo()
+  }
   const clearInputHandler = () => {
     setInputText('')
     setMainSearchValue('')
@@ -200,6 +213,7 @@ const MicrosoftTodoProvider = ({ children }) => {
     getTodo()
     // eslint-disable-next-line
   }, [])
+
   return (
     <ToDoContext.Provider
       value={{
@@ -245,6 +259,7 @@ const MicrosoftTodoProvider = ({ children }) => {
         allToDo,
         showBottomRow,
         setShowBottomRow,
+        setSortTitle,
       }}>
       {children}
     </ToDoContext.Provider>

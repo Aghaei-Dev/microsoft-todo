@@ -61,7 +61,7 @@ const Wrapper = styled.div`
     border-top: 1px solid var(--bg-border);
     width: 100%;
     height: 50px;
-    background: #f5f5f5;
+    background: var(--bg-primary);
     box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.08);
     border-bottom-left-radius: 0.4rem;
     border-bottom-right-radius: 0.4rem;
@@ -87,7 +87,8 @@ const Wrapper = styled.div`
     place-items: center;
     color: var(--font-color-secondary);
     &:hover {
-      background-color: var(--bg-primary);
+      background-color: var(--bg-secondary);
+      border-radius: var(--radius);
     }
   }
   .add-btn {

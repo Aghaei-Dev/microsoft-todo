@@ -25,7 +25,7 @@ import {
 } from '../../assets/icons'
 
 import { FiveIconSideBare } from '../../assets/lists'
-import { MyDay, Important, Inbox, Completed } from '../left'
+import { MyDay, Important, Inbox, Completed } from '..'
 
 import { useGlobalContext } from '../../context/context'
 import { RightSideBar } from '..'

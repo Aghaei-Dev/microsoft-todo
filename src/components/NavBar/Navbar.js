@@ -20,7 +20,7 @@ import {
 } from '../../assets/icons'
 
 import UserInfo from './UserInfo'
-import Drawers from '../Drawer/Drawers'
+import { Drawers } from '..'
 import { NavWrapper } from '../../assets/style/StyledComponent'
 import { useGlobalContext } from '../../context/context'
 import { navbarIcons } from '../../assets/lists'

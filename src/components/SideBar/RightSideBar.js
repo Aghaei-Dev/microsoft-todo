@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useRef } from 'react'
 import { styled } from '@mui/material/styles'
 import { Box, Drawer, List, IconButton, Tooltip } from '@mui/material'
 
@@ -22,7 +22,6 @@ import {
 } from '../../assets/icons'
 
 import { useGlobalContext } from '../../context/context'
-import { useRef } from 'react'
 
 const RightSideBar = () => {
   const {

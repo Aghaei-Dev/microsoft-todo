@@ -26,7 +26,7 @@ const CompletedRow = ({
       : listInTop
 
   //animate
-  const [parent, enableAnimations] = useAutoAnimate()
+  const [parent] = useAutoAnimate()
 
   return (
     <Wrapper>

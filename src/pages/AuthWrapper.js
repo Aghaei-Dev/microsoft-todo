@@ -3,7 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 import { GridWrapper } from '../assets/style/StyledComponent'
 
-import { Loading } from '../components'
+import { LoadingPage } from '../components'
 
 function AuthWrapper({ children }) {
   const { isLoading, error } = useAuth0()
@@ -11,7 +11,7 @@ function AuthWrapper({ children }) {
   if (isLoading) {
     return (
       <GridWrapper>
-        <Loading />
+        <LoadingPage />
       </GridWrapper>
     )
   }

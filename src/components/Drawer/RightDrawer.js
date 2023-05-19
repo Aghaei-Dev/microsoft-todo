@@ -5,23 +5,26 @@ import { Button, Box, CircularProgress } from '@mui/material'
 
 import { ClearOutlinedIcon } from '../../assets/icons'
 import { useGlobalContext } from '../../context/context'
-import AntSwitch from '../AntSwitch/AntSwitch'
+import { AntSwitch } from '..'
 
 import { newsBoxes, bottomOfNewsBoxes, setting } from '../../assets/lists'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 const RightList = () => {
   const { rightList, toggleDrawer, height } = useGlobalContext()
 
+  const [parent] = useAutoAnimate()
+
   return (
     <Wrapper height={height}>
-      <div className='top-row'>
+      <div className='top-row' ref={parent}>
         <h3>{rightList}</h3>
         <div onClick={toggleDrawer('right', false, '')}>
           <ClearOutlinedIcon sx={{ color: 'var(--font-color-secondary)' }} />
         </div>
       </div>
 
-      <div className='content'>
+      <div className='content' ref={parent}>
         {(rightList === 'Settings' && <Setting />) ||
           (rightList === 'help & feedback' && <Help />) ||
           (rightList === 'What’s news' && <News />)}
@@ -32,6 +35,7 @@ const RightList = () => {
 
 export default RightList
 const Wrapper = styled('div')(({ height }) => ({
+  height: height,
   maxHeight: height - 57, //for navbar
   display: 'flex',
   justifyContent: 'start',
@@ -39,7 +43,7 @@ const Wrapper = styled('div')(({ height }) => ({
   flexDirection: 'column',
   gap: '2rem',
   paddingTop: '1rem',
-  overflow: 'auto',
+
   '.top-row': {
     width: '100%',
     display: 'flex',
@@ -65,6 +69,10 @@ const Wrapper = styled('div')(({ height }) => ({
   },
   '.content': {
     width: ' 100%',
+    height: height,
+    maxHeight: height, //for navbar
+    overflowX: 'hidden',
+    overflowY: 'auto',
   },
 }))
 
@@ -210,7 +218,14 @@ const News = () => {
                 <p>{item.text}</p>
                 <Button
                   color='secondary'
-                  sx={{ fontSize: '.8rem' }}
+                  sx={{
+                    fontSize: '.8rem',
+                    borderColor: 'var(--bg-border)',
+                    color: 'var(--font-color-primary)',
+                    ':hover': {
+                      borderColor: 'var(--bg-border)',
+                    },
+                  }}
                   variant='outlined'>
                   {item.btnText}
                 </Button>
@@ -239,7 +254,7 @@ const WrapperNews = styled('div')(({ height }) => ({
   height: height - 150,
   article: {
     boxShadow: 'var(--light-shadow)',
-    background: 'var(--bg-secondary)',
+    background: 'var(--bg-hover)',
     marginBottom: '2rem',
     img: {
       width: '100%',

@@ -15,7 +15,7 @@ import {
   Button,
 } from '@mui/material'
 
-import Microsoft from '../Logo/Microsoft'
+import {Microsoft} from '..'
 
 import styled from 'styled-components'
 import { useGlobalContext } from '../../context/context.js'

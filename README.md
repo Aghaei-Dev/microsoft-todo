@@ -1,4 +1,4 @@
-# TO DO (clone of microsoft todo )
+<h1 align='middle'> TO DO (clone of microsoft todo ) 📝</h1>
 
 
 <br/>
@@ -16,7 +16,7 @@
 
 
 <ul>
- <li> Dark Mode</li>
+ <li> Dark Mode 🌚</li>
  <br/>
   <p align='middle'>
   <img src="https://i.ibb.co/RgjspsX/image.png" />
@@ -24,7 +24,7 @@
  
  <br/>
  
- <li> Fully Responsive even 350*350 px</li>
+ <li> Fully Responsive even 350*350 px 📏</li>
  <br/>
   <p align='middle'>
   <img src="https://i.ibb.co/qm01mqk/image.png" />
@@ -35,9 +35,12 @@
  <li>does animation matter? 😅</li>
  <br/>
   <p align='middle'>
-<!--    ![grab-landing-page](https://i.ibb.co/1ZtjKHn/Animation.gif)
-  <img src="https://i.ibb.co/1ZtjKHn/Animation.gif" /> -->
+<img src="https://im.ezgif.com/tmp/ezgif-1-c6ab208767.webp"/>
  </p>
+ 
+  <li>With Firebase 🔥</li>
+  <li>and much much more ... </li>
+ 
+ 
  </ul>
  
-![](https://i.ibb.co/1ZtjKHn/Animation.gif)

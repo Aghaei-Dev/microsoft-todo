@@ -8,17 +8,17 @@ import { BrowserRouter as Router } from 'react-router-dom'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 
 root.render(
-  <React.StrictMode>
-    <Auth0Provider
-      domain='dev-k3jcu6blnnrdmv3l.us.auth0.com'
-      clientId='3UDUBB2gkqu6IZAitRnZqwiMBRRm1Lwl'
-      redirectUri={window.location.origin}
-      cacheLocation='localstorage'>
-      <MicrosoftTodoProvider>
-        <Router>
-          <App />
-        </Router>
-      </MicrosoftTodoProvider>
-    </Auth0Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Auth0Provider
+    domain='dev-k3jcu6blnnrdmv3l.us.auth0.com'
+    clientId='3UDUBB2gkqu6IZAitRnZqwiMBRRm1Lwl'
+    redirectUri={window.location.origin}
+    cacheLocation='localstorage'>
+    <MicrosoftTodoProvider>
+      <Router>
+        <App />
+      </Router>
+    </MicrosoftTodoProvider>
+  </Auth0Provider>
+  // </React.StrictMode>
 )

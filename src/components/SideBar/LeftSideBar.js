@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { styled } from '@mui/material/styles'
 import {
   Divider,
@@ -22,10 +22,12 @@ import {
   CheckCircleOutlinedIcon,
   HomeOutlinedIcon,
   AddOutlinedIcon,
+  LoupeOutlinedIcon,
+  FormatListBulletedOutlinedIcon,
 } from '../../assets/icons'
 
 import { FiveIconSideBare } from '../../assets/lists'
-import { MyDay, Important, Inbox, Completed } from '..'
+import { Content } from '..'
 
 import { useGlobalContext } from '../../context/context'
 import { RightSideBar } from '..'
@@ -42,70 +44,80 @@ const LeftSideBar = () => {
     height,
     rightSideBarOpen,
     allToDo,
+    newListInp,
+    setNewListInp,
+    submitNewList,
+    newListArray,
   } = useGlobalContext()
 
   const sideMenu = [
     {
+      id: 1,
       icon: <LightModeOutlinedIcon fontSize='small' />,
       text: 'my day',
       length: notCompleted.length,
     },
     {
+      id: 2,
       icon: <StarOutlineOutlinedIcon fontSize='small' />,
       text: 'important',
       length: important.filter((item) => item.isCompleted === false).length,
     },
     {
+      id: 3,
       icon: <CheckCircleOutlinedIcon fontSize='small' />,
       text: 'completed',
       length: 0,
     },
     {
+      id: 4,
       icon: <HomeOutlinedIcon fontSize='small' />,
       text: 'tasks',
       length: allToDo.filter((item) => item.isCompleted === false).length,
     },
+    ...newListArray.flat(),
   ]
   React.useEffect(() => {
     document.title = `${capitalMaker(sidebarTitle)} - To Do`
   }, [sidebarTitle])
+
   return (
     <Wrapper height={height}>
-      <Box sx={{ display: 'flex' }}>
-        <Drawer
-          sx={{
+      <Drawer
+        sx={{
+          width: width < 800 ? 205 : 270,
+          flexShrink: 0,
+          zIndex: width < 800 ? 1 : 0,
+          '& .MuiDrawer-paper': {
             width: width < 800 ? 205 : 270,
-            flexShrink: 0,
-            zIndex: width < 800 ? 1 : 0,
-            '& .MuiDrawer-paper': {
-              width: width < 800 ? 205 : 270,
 
-              boxSizing: 'border-box',
-              pt: '4rem',
-              zIndex: 1,
-            },
-          }}
-          variant={`${width < 800 ? 'temporary' : 'persistent'}`}
-          anchor='left'
-          open={open}>
-          <DrawerHeader sx={{ pl: '.8rem' }}>
-            <IconButton
-              disableRipple
-              sx={{ marginRight: 'auto' }}
-              onClick={handleDrawerClose}>
-              <MenuOutlinedIcon />
-            </IconButton>
-          </DrawerHeader>
-          <List sx={{ maxHeight: height, overflow: 'auto' }}>
-            {sideMenu.map((item, index) => {
-              const { icon, text, length } = item
-              return (
+            boxSizing: 'border-box',
+            pt: '4rem',
+            zIndex: 1,
+          },
+        }}
+        variant={`${width < 800 ? 'temporary' : 'persistent'}`}
+        anchor='left'
+        open={open}>
+        <DrawerHeader sx={{ pl: '.8rem' }}>
+          <IconButton
+            disableRipple
+            sx={{ marginRight: 'auto' }}
+            onClick={handleDrawerClose}>
+            <MenuOutlinedIcon />
+          </IconButton>
+        </DrawerHeader>
+        <List sx={{ maxHeight: height, overflow: 'auto' }}>
+          {sideMenu.map((item) => {
+            const { icon, text, length, id } = item
+            return (
+              <span key={id}>
                 <ListItem
                   sx={{
                     borderLeft: `2px solid ${
                       sidebarTitle === text
                         ? 'var(--bg-brand-hover)'
-                        : 'var(--bg-border)'
+                        : 'transparent'
                     }`,
                     background: ` ${
                       sidebarTitle === text
@@ -113,11 +125,11 @@ const LeftSideBar = () => {
                         : 'var(  --bg-brand-primary)'
                     }`,
                   }}
-                  disablePadding
-                  key={index}>
+                  disablePadding>
                   <ListItemButton
                     onClick={() => {
                       setSidebarTitle(text)
+                      width < 800 && handleDrawerClose()
                     }}>
                     <SingleRow>
                       <div
@@ -126,7 +138,9 @@ const LeftSideBar = () => {
                             ? 'active icon-text'
                             : 'icon-text'
                         }`}>
-                        {icon}
+                        {icon || (
+                          <FormatListBulletedOutlinedIcon fontSize='small' />
+                        )}
                         {text}
                       </div>
                       <div
@@ -136,62 +150,71 @@ const LeftSideBar = () => {
                     </SingleRow>
                   </ListItemButton>
                 </ListItem>
-              )
-            })}
-            <Divider variant='middle' sx={{ marginTop: '.6rem' }} />
-            <ListItem sx={{ mt: 'auto' }} disablePadding>
-              <div
-                className='new-list'
-                component='form'
-                sx={{
-                  padding: '2px 4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  width: '100%',
-                }}>
+                {id === 4 && (
+                  <Divider variant='middle' sx={{ margin: '.6rem' }} />
+                )}
+              </span>
+            )
+          })}
+
+          <NewListRow disablePadding>
+            <div className='new-list-container'>
+              <div className='new-list-inp'>
                 <IconButton
                   disableRipple
                   color='primary'
-                  sx={{ padding: '.8rem' }}
-                  aria-label='menu'>
+                  sx={{ padding: '.8rem' }}>
                   <AddOutlinedIcon fontSize='small' />
                 </IconButton>
-                <InputBase
-                  sx={{
-                    flex: 1,
-                  }}
-                  placeholder='New list'
-                />
+                <form onSubmit={submitNewList}>
+                  <InputBase
+                    sx={{
+                      flex: 1,
+                    }}
+                    value={newListInp}
+                    onChange={(e) => {
+                      setNewListInp(e.target.value)
+                    }}
+                    placeholder='New list'
+                  />
+                </form>
               </div>
-            </ListItem>
-          </List>
-          <FiveBottomIcon>
-            {FiveIconSideBare.map((item, index) => {
-              const { icon, title } = item
-              return (
-                <Tooltip key={index} title={title} arrow>
-                  <div>{icon}</div>
+              <div>
+                <Tooltip arrow title='create groupe' placement='top'>
+                  <IconButton
+                    disableRipple
+                    color='primary'
+                    sx={{ p: '0rem 1.2rem' }}>
+                    <LoupeOutlinedIcon fontSize='small' color='primary' />
+                  </IconButton>
                 </Tooltip>
-              )
-            })}
-          </FiveBottomIcon>
-        </Drawer>
-        <Main
-          width={width}
-          open={open}
-          rightsidebaropen={rightSideBarOpen ? `true` : undefined}
-          sx={{
-            flexGrow: 1,
-            marginLeft: `${width < 800 ? '0rem' : ''}`,
-            padding: '1.5rem 2rem',
-          }}>
-          {(sidebarTitle === 'my day' && <MyDay />) ||
-            (sidebarTitle === 'important' && <Important />) ||
-            (sidebarTitle === 'completed' && <Completed />) ||
-            (sidebarTitle === 'tasks' && <Inbox />)}
-        </Main>
-        <RightSideBar />
-      </Box>
+              </div>
+            </div>
+          </NewListRow>
+        </List>
+        <FiveBottomIcon>
+          {FiveIconSideBare.map((item, index) => {
+            const { icon, title } = item
+            return (
+              <Tooltip key={index} title={title} arrow>
+                <div>{icon}</div>
+              </Tooltip>
+            )
+          })}
+        </FiveBottomIcon>
+      </Drawer>
+      <Main
+        width={width}
+        open={open}
+        rightsidebaropen={rightSideBarOpen ? `true` : undefined}
+        sx={{
+          flexGrow: 1,
+          marginLeft: `${width < 800 ? '0rem' : ''}`,
+          padding: '1.5rem 0',
+        }}>
+        <Content />
+      </Main>
+      <RightSideBar />
     </Wrapper>
   )
 }
@@ -210,7 +233,7 @@ const Main = styled('main', {
 
   marginLeft: `-${!open && 270}px`,
 
-  marginRight: `-${!rightsidebaropen && 345}px`,
+  marginRight: `-${!rightsidebaropen && 350}px`,
   margin: `0 ${width <= 800 && 0}  0 0`,
 
   ...(open && {
@@ -248,19 +271,10 @@ const SingleRow = styled('div')(() => ({
     fontWeight: '500',
   },
 }))
-const Wrapper = styled('div')(({ height }) => ({
+const Wrapper = styled(Box)(({ height }) => ({
   maxHeight: height - 55, // px for navbar
   overflow: 'auto',
-  '.new-list': {
-    marginTop: '.5em',
-    paddingLeft: '.75rem',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    ':hover': {
-      background: 'var(--bg-hover)',
-    },
-  },
+  display: 'flex',
 }))
 const FiveBottomIcon = styled('div')(() => ({
   display: 'flex',
@@ -270,7 +284,8 @@ const FiveBottomIcon = styled('div')(() => ({
   marginTop: 'auto',
 
   div: {
-    padding: '.6rem',
+    flexGrow: '2',
+    padding: '1rem 0',
     display: 'grid',
     placeItems: 'center',
     cursor: 'pointer',
@@ -278,6 +293,26 @@ const FiveBottomIcon = styled('div')(() => ({
 
     ':hover': {
       background: 'var(--bg-hover)',
+    },
+  },
+}))
+
+const NewListRow = styled(ListItem)(() => ({
+  marginTop: '.5em',
+  '.new-list-container': {
+    display: 'flex',
+
+    div: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      cursor: 'pointer',
+      ':hover': {
+        background: 'var(--bg-hover)',
+      },
+    },
+    '.new-list-inp': {
+      paddingLeft: '.75rem',
     },
   },
 }))

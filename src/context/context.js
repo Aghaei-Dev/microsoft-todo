@@ -11,13 +11,14 @@ import {
   deleteDoc,
   getDocs,
 } from 'firebase/firestore'
-
 import {
   getDarkMode,
   getSidebarTitle,
-  sortCreationDate,
+  sortByCreationDate,
+  descendingComparator,
   sortAlphabetically,
   sortIsImportant,
+  lengthChecker,
 } from '../func/functions'
 const ToDoContext = React.createContext()
 
@@ -98,9 +99,10 @@ const MicrosoftTodoProvider = ({ children }) => {
   const todoCollectionRef = collection(db, 'ToDo')
 
   //add todo to firebase
+  //here
   const submitHandler = async (e, special) => {
     e.preventDefault()
-    if (inputText.length !== 0) {
+    if (inputText) {
       setInputText('')
       await addDoc(todoCollectionRef, {
         text: inputText,
@@ -123,12 +125,16 @@ const MicrosoftTodoProvider = ({ children }) => {
       ...doc.data(),
       id: doc.id,
     }))
+
     if (sortTitle === 'importance') {
       setAllToDo(ToDos.sort(sortIsImportant))
+      setShowSort(true)
     } else if (sortTitle === 'alphabetically') {
       setAllToDo(ToDos.sort(sortAlphabetically))
+      setShowSort(true)
     } else if (sortTitle === 'creationDate') {
-      setAllToDo(ToDos.sort(sortCreationDate))
+      setAllToDo(ToDos.sort(sortByCreationDate))
+      setShowSort(true)
     } else {
       setAllToDo(ToDos)
     }
@@ -180,6 +186,49 @@ const MicrosoftTodoProvider = ({ children }) => {
     setMainSearchValue('')
   }
 
+  const [newListArray, setNewListArray] = useState([])
+  const [newListInp, setNewListInp] = useState('')
+
+  const newListCollectionRef = collection(db, 'NewList')
+
+  //add NewList to firebase
+  const submitNewList = async (e) => {
+    e.preventDefault()
+    if (newListInp) {
+      setNewListInp('')
+      await addDoc(newListCollectionRef, {
+        text: lengthChecker(newListInp, width),
+        createdAt: new Date().getTime().toString(),
+        completedRow: {
+          listInTop: [],
+          listInAccordion: [],
+          listInAccordionTitle: 'completed',
+          listInTopTitle: 'notCompleted',
+          title: 'completed',
+          showNotCompleted: true,
+        },
+      })
+    }
+    getNewList()
+  }
+  const getNewList = async () => {
+    const data = await getDocs(newListCollectionRef)
+
+    const NewList = data.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }))
+    setNewListArray(NewList.sort(sortByCreationDate))
+  }
+
+  //sort
+
+  const [showSort, setShowSort] = useState(false)
+
+  const closeSort = () => {
+    setShowSort(false)
+    setSortTitle('')
+  }
   //for responsively
   const [width, setWidth] = useState(window.innerWidth)
   const [height, setHeight] = useState(window.innerHeight)
@@ -208,9 +257,14 @@ const MicrosoftTodoProvider = ({ children }) => {
     localStorage.setItem('darkMode', isDarkMode)
   }, [isDarkMode])
 
+  useEffect(() => {
+    getTodo()
+    // eslint-disable-next-line
+  }, [sortTitle])
   //get todo initially
   useEffect(() => {
     getTodo()
+    getNewList()
     // eslint-disable-next-line
   }, [])
 
@@ -259,7 +313,14 @@ const MicrosoftTodoProvider = ({ children }) => {
         allToDo,
         showBottomRow,
         setShowBottomRow,
+        sortTitle,
         setSortTitle,
+        newListInp,
+        setNewListInp,
+        submitNewList,
+        newListArray,
+        closeSort,
+        showSort,
       }}>
       {children}
     </ToDoContext.Provider>

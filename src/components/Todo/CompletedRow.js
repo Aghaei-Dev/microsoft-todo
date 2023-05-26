@@ -10,7 +10,7 @@ import SingleNote from './SingleNote'
 import { ChevronRightIcon } from '../../assets/icons'
 
 import { useAutoAnimate } from '@formkit/auto-animate/react'
-
+import { useGlobalContext } from '../../context/context'
 const CompletedRow = ({
   title,
   showNotCompleted,
@@ -20,6 +20,7 @@ const CompletedRow = ({
   listInTopTitle,
   listInTop,
 }) => {
+  const { height, showBottomRow } = useGlobalContext()
   const list =
     listInTopTitle === 'important'
       ? listInTop.filter((item) => item.isCompleted !== true)
@@ -29,12 +30,11 @@ const CompletedRow = ({
   const [parent] = useAutoAnimate()
 
   return (
-    <Wrapper>
-      {showNotCompleted && list.length > 0 && (
+    <Wrapper height={height} showBottomRow={showBottomRow}>
+      {showNotCompleted && list?.length > 0 && (
         <div className='not-completed' ref={parent}>
           {list.map((item) => {
             const { id, text, isCompleted, isImportant, note } = item
-
             return (
               <SingleNote
                 id={id}
@@ -48,25 +48,29 @@ const CompletedRow = ({
           })}
         </div>
       )}
-      {showCompleted && listInAccordion.length > 0 && (
-        <CompletedList
-          forwardRef={parent}
-          title={title}
-          showCompleted={showCompleted}
-          listInAccordion={listInAccordion}
-          listInAccordionTitle={listInAccordionTitle}
-        />
+      {showCompleted && listInAccordion?.length > 0 && (
+        <>
+          <CompletedList
+            forwardRef={parent}
+            title={title}
+            showCompleted={showCompleted}
+            listInAccordion={listInAccordion}
+            listInAccordionTitle={listInAccordionTitle}
+          />
+          <Divider />
+        </>
       )}
-      <Divider />
     </Wrapper>
   )
 }
 
 export default CompletedRow
 
-const Wrapper = styled('div')(() => ({
+const Wrapper = styled('div')(({ height, showBottomRow }) => ({
   width: '100%',
-  overflow: 'hidden',
+  height: showBottomRow ? height - 260 : height - 210,
+  padding: '0 1.5rem 0 2rem ',
+  overflow: 'auto',
   '.not-completed': {
     padding: '1rem 0',
     display: 'flex',

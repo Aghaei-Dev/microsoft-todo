@@ -40,7 +40,6 @@ const RightSideBar = () => {
   const autosize = () => {
     setTimeout(function () {
       textAreaRef.current.style.cssText = ` 
-  
         height: ${textAreaRef.current.scrollHeight}px;
       `
     }, 0)

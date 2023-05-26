@@ -34,6 +34,11 @@ import {
   PeopleAltOutlinedIcon,
   AttachmentOutlinedIcon,
   DoneOutlineOutlinedIcon,
+  PrintOutlinedIcon,
+  ColorLensOutlinedIcon,
+  StarBorderOutlinedIcon,
+  SwapVertOutlinedIcon,
+  MoreTimeOutlinedIcon,
 } from '../icons'
 
 export const newsBoxes = [
@@ -149,5 +154,67 @@ export const FiveIconSideBare = [
   {
     icon: <DoneOutlineOutlinedIcon color='primary' fontSize='small' />,
     title: 'to do',
+  },
+]
+
+export const optionsValue = [{ icon: <PrintOutlinedIcon />, title: 'print' }]
+export const optionsValueInOtherPage = [
+  { icon: <ColorLensOutlinedIcon />, title: 'changeTheme' },
+
+  { icon: <PrintOutlinedIcon />, title: 'print' },
+]
+
+export const sortValue = [
+  {
+    icon: <StarBorderOutlinedIcon />,
+    title: 'importance',
+    sortTitle: 'importance',
+  },
+  {
+    icon: <CalendarMonthOutlinedIcon />,
+    title: 'due date',
+  },
+  {
+    icon: <SwapVertOutlinedIcon />,
+    title: 'alphabetically',
+    sortTitle: 'alphabetically',
+  },
+  {
+    icon: <MoreTimeOutlinedIcon />,
+    title: 'creation date',
+    sortTitle: 'creationDate',
+  },
+]
+export const sortValueInImportantPage = [
+  { icon: <CalendarMonthOutlinedIcon />, title: 'due date' },
+  { icon: <StarBorderOutlinedIcon />, title: 'adjust to my day' },
+  {
+    icon: <SwapVertOutlinedIcon />,
+    title: 'alphabetically',
+    sortTitle: 'alphabetically',
+  },
+  {
+    icon: <MoreTimeOutlinedIcon />,
+    title: 'creation date',
+    sortTitle: 'creationDate',
+  },
+]
+export const sortValueInCompletedPageAndTask = [
+  {
+    icon: <StarBorderOutlinedIcon />,
+    title: 'importance',
+    sortTitle: 'importance',
+  },
+  { icon: <CalendarMonthOutlinedIcon />, title: 'due date' },
+  { icon: <StarBorderOutlinedIcon />, title: 'adjust to my day' },
+  {
+    icon: <SwapVertOutlinedIcon />,
+    title: 'alphabetically',
+    sortTitle: 'alphabetically',
+  },
+  {
+    icon: <MoreTimeOutlinedIcon />,
+    title: 'creation date',
+    sortTitle: 'creationDate',
   },
 ]

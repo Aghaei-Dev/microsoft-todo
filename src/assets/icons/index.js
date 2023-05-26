@@ -35,7 +35,11 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined'
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined'
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
-
+import LoupeOutlinedIcon from '@mui/icons-material/LoupeOutlined'
+import FormatListBulletedOutlinedIcon from '@mui/icons-material/FormatListBulletedOutlined'
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined'
+import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined'
+import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
 export {
   MenuOutlinedIcon,
   MoreHorizOutlinedIcon,
@@ -74,4 +78,9 @@ export {
   AttachFileOutlinedIcon,
   LocalOfferOutlinedIcon,
   AddOutlinedIcon,
+  LoupeOutlinedIcon,
+  FormatListBulletedOutlinedIcon,
+  CloseOutlinedIcon,
+  ExpandLessOutlinedIcon,
+  ExpandMoreOutlinedIcon,
 }

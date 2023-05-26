@@ -1,5 +1,5 @@
 import React from 'react'
-import styled from 'styled-components'
+import { styled } from '@mui/material/styles'
 
 import { useGlobalContext } from '../../context/context'
 
@@ -26,18 +26,24 @@ import {
   MenuOutlinedIcon,
   MoreHorizOutlinedIcon,
   SwapVertOutlinedIcon,
-  StarBorderOutlinedIcon,
   LightbulbOutlinedIcon,
-  CalendarMonthOutlinedIcon,
-  MoreTimeOutlinedIcon,
-  PrintOutlinedIcon,
-  ColorLensOutlinedIcon,
+  CloseOutlinedIcon,
+  ExpandLessOutlinedIcon,
+  ExpandMoreOutlinedIcon,
 } from '../../assets/icons'
 
+import {
+  optionsValue,
+  optionsValueInOtherPage,
+  sortValue,
+  sortValueInCompletedPageAndTask,
+  sortValueInImportantPage,
+} from '../../assets/lists'
 import moment from 'moment/moment'
 
 export const PageTopRow = ({ logo, title }) => {
-  const { open, handleDrawerOpen, width } = useGlobalContext()
+  const { open, handleDrawerOpen, width, sortTitle, closeSort, showSort } =
+    useGlobalContext()
 
   return (
     <Wrapper>
@@ -94,145 +100,99 @@ export const PageTopRow = ({ logo, title }) => {
           </Tooltip>
         )}
       </div>
+
+      {showSort && (
+        <SortRow>
+          <div>
+            <Tooltip title='reverse sort order' placement='top' arrow>
+              <IconButton disableRipple onClick={closeSort}>
+                <ExpandLessOutlinedIcon fontSize='small' />
+              </IconButton>
+            </Tooltip>
+          </div>
+          <div>sorted by {sortTitle}</div>
+          <div>
+            <Tooltip title='remove sort order option' placement='top-end' arrow>
+              <IconButton disableRipple onClick={closeSort}>
+                <CloseOutlinedIcon fontSize='small' />
+              </IconButton>
+            </Tooltip>
+          </div>
+        </SortRow>
+      )}
     </Wrapper>
   )
 }
 
-const Wrapper = styled.div`
-  margin-bottom: 2rem;
-  width: 100%;
-  height: 100%;
-  color: var(--font-color-primary);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  div {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    h3 {
-      padding-top: 0.8rem;
-      font-size: 1.1rem;
-      font-weight: 500;
-    }
-  }
-  .title-date {
-    position: relative;
-    div {
-      width: 200%;
-      position: absolute;
-      top: 85%;
-      left: 70%;
-      transform: translate(-35%, 0%);
-      color: var(--font-color-disable);
-      font-size: 0.8rem;
-      font-weight: 300;
-    }
-  }
-
-  div.last-items {
-    > div {
-      cursor: pointer;
-      font-size: 0.8rem;
-      font-weight: 300;
-
-      color: var(--font-color-secondary) !important;
-      &:hover {
-        background-color: var(--bg-active);
-      }
-    }
-  }
-  .icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.3rem;
-
-    color: var(--font-color-secondary) !important;
-    position: relative;
-    cursor: pointer;
-  }
-`
-
-export const ListOptionsMenuValue = ({ headerTitle, array, onClick }) => {
-  return (
-    <List
-      className={headerTitle}
-      subheader={
-        <ListSubheader
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            fontSize: '.9rem',
-            fontWeight: '600',
-            color: 'var(--font-color-primary)',
-          }}
-          component='div'>
-          {headerTitle}
-        </ListSubheader>
-      }
-      sx={{ boxShadow: 'var(--light-shadow)', borderRadius: 'var(--radius)' }}>
-      <Divider />
-
-      {array.map((item, index) => {
-        return (
-          <ListItem key={index} disablePadding>
-            <ListItemButton disableRipple onClick={onClick}>
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText
-                disableTypography
-                sx={{
-                  fontSize: '.9rem',
-                  color: 'var(--font-color-secondary)',
-                }}
-                primary={item.title}
-              />
-            </ListItemButton>
-          </ListItem>
-        )
-      })}
-    </List>
-  )
-}
-
-// default values array
-const optionsValue = [{ icon: <PrintOutlinedIcon />, title: 'print' }]
-const optionsValueInOtherPage = [
-  { icon: <ColorLensOutlinedIcon />, title: 'changeTheme' },
-
-  { icon: <PrintOutlinedIcon />, title: 'print' },
-]
-const sortValue = [
-  {
-    icon: <StarBorderOutlinedIcon />,
-    title: 'importance',
+const Wrapper = styled('div')(() => ({
+  position: 'relative',
+  marginBottom: ' 2rem',
+  width: '100%',
+  height: '100%',
+  color: 'var(--font-color-primary)',
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  div: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    h3: {
+      paddingTop: ' 0.8rem',
+      fontSize: '1.1rem',
+      fontWeight: 500,
+    },
   },
-  {
-    icon: <CalendarMonthOutlinedIcon />,
-    title: 'due date',
+  '.title-date': {
+    position: 'relative',
+    div: {
+      width: ' 200%',
+      position: 'absolute',
+      top: '85%',
+      left: '70%',
+      transform: 'translate(-35%, 0%)',
+      color: 'var(--font-color-disable)',
+      fontSize: '0.8rem',
+      fontWeight: '300',
+    },
   },
-  {
-    icon: <SwapVertOutlinedIcon />,
-    title: 'alphabetically',
+  'div.last-items': {
+    ' > div': {
+      cursor: 'pointer',
+      fontSize: ' 0.8rem',
+      fontWeight: '300',
+
+      color: 'var(--font-color-secondary) !important',
+      ':hover': {
+        backgroundColor: 'var(--bg-active)',
+      },
+    },
   },
-  {
-    icon: <MoreTimeOutlinedIcon />,
-    title: 'creation date',
+  ' .icon ': {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '0.3rem',
+
+    color: 'var(--font-color-secondary) !important',
+    position: 'relative',
+    cursor: 'pointer',
   },
-]
-const sortValueInImportantPage = [
-  { icon: <CalendarMonthOutlinedIcon />, title: 'due date' },
-  { icon: <StarBorderOutlinedIcon />, title: 'adjust to my day' },
-  { icon: <SwapVertOutlinedIcon />, title: 'alphabetically' },
-  { icon: <MoreTimeOutlinedIcon />, title: 'creation date' },
-]
-const sortValueInCompletedPageAndTask = [
-  { icon: <StarBorderOutlinedIcon />, title: 'importance' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'due date' },
-  { icon: <StarBorderOutlinedIcon />, title: 'adjust to my day' },
-  { icon: <SwapVertOutlinedIcon />, title: 'alphabetically' },
-  { icon: <MoreTimeOutlinedIcon />, title: 'creation date' },
-]
+}))
+
+const SortRow = styled('div')(() => ({
+  fontSize: '0.7rem',
+  position: 'absolute',
+  top: '100%',
+  right: '0',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  button: {
+    borderRadius: 0,
+    padding: '0',
+  },
+}))
 
 export default function MenuListComposition({
   title,
@@ -240,6 +200,8 @@ export default function MenuListComposition({
   headerTitle,
   array,
 }) {
+  const { setSortTitle } = useGlobalContext()
+
   const [open, setOpen] = React.useState(false)
   const anchorRef = React.useRef(null)
 
@@ -292,11 +254,50 @@ export default function MenuListComposition({
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList sx={{ padding: '0' }}>
-                    <ListOptionsMenuValue
-                      onClick={handleClose}
-                      headerTitle={headerTitle}
-                      array={array}
-                    />
+                    <List
+                      className={headerTitle}
+                      subheader={
+                        <ListSubheader
+                          sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            fontSize: '.9rem',
+                            fontWeight: '600',
+                            color: 'var(--font-color-primary)',
+                          }}
+                          component='div'>
+                          {headerTitle}
+                        </ListSubheader>
+                      }
+                      sx={{
+                        boxShadow: 'var(--light-shadow)',
+                        borderRadius: 'var(--radius)',
+                      }}>
+                      <Divider />
+
+                      {array.map((item, index) => {
+                        return (
+                          <ListItem key={index} disablePadding>
+                            <ListItemButton
+                              disableRipple
+                              onClick={(e) => {
+                                handleClose(e)
+                                setSortTitle(item.sortTitle)
+                              }}>
+                              <ListItemIcon>{item.icon}</ListItemIcon>
+                              <ListItemText
+                                disableTypography
+                                sx={{
+                                  fontSize: '.9rem',
+                                  color: 'var(--font-color-secondary)',
+                                }}
+                                primary={item.title}
+                              />
+                            </ListItemButton>
+                          </ListItem>
+                        )
+                      })}
+                    </List>
                   </MenuList>
                 </ClickAwayListener>
               </Paper>

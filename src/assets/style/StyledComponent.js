@@ -3,6 +3,9 @@ import styled, { css } from 'styled-components'
 export const Wrapper = styled.div`
   width: 100%;
 `
+export const PadWrapper = styled(Wrapper)`
+  padding: 0 2rem;
+`
 
 export const GridWrapper = styled.section`
   min-height: 100vh;

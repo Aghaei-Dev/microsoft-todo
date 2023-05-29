@@ -52,7 +52,7 @@ const RightSideBar = () => {
           sx={{
             width: width < 800 ? 350 : 350,
             flexShrink: 0,
-            zIndex: width < 800 ? 1 : 0,
+            zIndex: width < 800 ? 10 : 0,
             '& .MuiDrawer-paper': {
               width: width < 800 ? 350 : 350,
 

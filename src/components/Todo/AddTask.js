@@ -6,6 +6,7 @@ import {
   NotificationsNoneOutlinedIcon,
   RepeatOutlinedIcon,
 } from '../../assets/icons'
+import { repeatValue, reminderValue, dueValue } from '../../assets/lists'
 
 import MenuListComposition from './TopRow'
 import { Button } from '@mui/material'
@@ -102,23 +103,3 @@ const Wrapper = styled.div`
     }
   }
 `
-
-const dueValue = [
-  { icon: <CalendarMonthOutlinedIcon />, title: 'today' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'tomorrow' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'next week' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'pick a date' },
-]
-const reminderValue = [
-  { icon: <CalendarMonthOutlinedIcon />, title: 'later today' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'tomorrow' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'next week' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'pick a date & time' },
-]
-const repeatValue = [
-  { icon: <CalendarMonthOutlinedIcon />, title: 'daily' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'weekdays' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'weekly' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'monthly' },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'yearly' },
-]

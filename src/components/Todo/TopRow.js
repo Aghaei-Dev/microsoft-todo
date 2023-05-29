@@ -1,8 +1,6 @@
 import React from 'react'
 import { styled } from '@mui/material/styles'
 
-import { useGlobalContext } from '../../context/context'
-
 //mui
 import {
   IconButton,
@@ -27,9 +25,6 @@ import {
   MoreHorizOutlinedIcon,
   SwapVertOutlinedIcon,
   LightbulbOutlinedIcon,
-  CloseOutlinedIcon,
-  ExpandLessOutlinedIcon,
-  ExpandMoreOutlinedIcon,
 } from '../../assets/icons'
 
 import {
@@ -41,12 +36,14 @@ import {
 } from '../../assets/lists'
 import moment from 'moment/moment'
 
+import SortedBy from '../Sort/SortedBy'
+import { useGlobalContext } from '../../context/context'
+
 export const PageTopRow = ({ logo, title }) => {
-  const { open, handleDrawerOpen, width, sortTitle, closeSort, showSort } =
-    useGlobalContext()
+  const { open, handleDrawerOpen, width, showSort } = useGlobalContext()
 
   return (
-    <Wrapper>
+    <Wrapper showSort={showSort}>
       <div>
         <IconButton
           disableRipple
@@ -100,39 +97,20 @@ export const PageTopRow = ({ logo, title }) => {
           </Tooltip>
         )}
       </div>
-
-      {showSort && (
-        <SortRow>
-          <div>
-            <Tooltip title='reverse sort order' placement='top' arrow>
-              <IconButton disableRipple onClick={closeSort}>
-                <ExpandLessOutlinedIcon fontSize='small' />
-              </IconButton>
-            </Tooltip>
-          </div>
-          <div>sorted by {sortTitle}</div>
-          <div>
-            <Tooltip title='remove sort order option' placement='top-end' arrow>
-              <IconButton disableRipple onClick={closeSort}>
-                <CloseOutlinedIcon fontSize='small' />
-              </IconButton>
-            </Tooltip>
-          </div>
-        </SortRow>
-      )}
+      {showSort && <SortedBy />}
     </Wrapper>
   )
 }
 
-const Wrapper = styled('div')(() => ({
-  position: 'relative',
-  marginBottom: ' 2rem',
+const Wrapper = styled('div')(({ showSort }) => ({
+  marginBottom: showSort ? '.5rem' : ' 2rem',
   width: '100%',
   height: '100%',
   color: 'var(--font-color-primary)',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
+  display: 'grid',
+  gridTemplateColumns: '3fr 1fr ',
+  gridTemplateRows: showSort ? '1fr 1fr' : '1fr',
+
   div: {
     display: 'flex',
     alignItems: 'center',
@@ -157,6 +135,7 @@ const Wrapper = styled('div')(() => ({
     },
   },
   'div.last-items': {
+    justifySelf: 'end',
     ' > div': {
       cursor: 'pointer',
       fontSize: ' 0.8rem',
@@ -177,20 +156,6 @@ const Wrapper = styled('div')(() => ({
     color: 'var(--font-color-secondary) !important',
     position: 'relative',
     cursor: 'pointer',
-  },
-}))
-
-const SortRow = styled('div')(() => ({
-  fontSize: '0.7rem',
-  position: 'absolute',
-  top: '100%',
-  right: '0',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  button: {
-    borderRadius: 0,
-    padding: '0',
   },
 }))
 
@@ -225,7 +190,7 @@ export default function MenuListComposition({
     prevOpen.current = open
   }, [open])
   return (
-    <Stack direction='row' spacing={2}>
+    <Stack sx={{ zIndex: 2 }} direction='row' spacing={2}>
       <div>
         <span
           className='icon'
@@ -277,24 +242,31 @@ export default function MenuListComposition({
 
                       {array.map((item, index) => {
                         return (
-                          <ListItem key={index} disablePadding>
-                            <ListItemButton
-                              disableRipple
-                              onClick={(e) => {
-                                handleClose(e)
-                                setSortTitle(item.sortTitle)
-                              }}>
-                              <ListItemIcon>{item.icon}</ListItemIcon>
-                              <ListItemText
-                                disableTypography
-                                sx={{
-                                  fontSize: '.9rem',
-                                  color: 'var(--font-color-secondary)',
-                                }}
-                                primary={item.title}
-                              />
-                            </ListItemButton>
-                          </ListItem>
+                          <span key={index}>
+                            <ListItem disablePadding>
+                              <ListItemButton
+                                disableRipple
+                                onClick={(e) => {
+                                  handleClose(e)
+                                  setSortTitle(item.sortTitle)
+                                }}>
+                                <ListItemIcon>{item.icon}</ListItemIcon>
+
+                                <ListItemText
+                                  disableTypography
+                                  sx={{
+                                    fontSize: '.9rem',
+                                    color: 'var(--font-color-secondary)',
+                                  }}
+                                  primary={item.title}
+                                />
+                              </ListItemButton>
+                            </ListItem>
+
+                            {item.divider && (
+                              <Divider sx={{ margin: '.5rem 0' }} />
+                            )}
+                          </span>
                         )
                       })}
                     </List>

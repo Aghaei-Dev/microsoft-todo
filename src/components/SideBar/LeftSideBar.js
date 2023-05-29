@@ -87,7 +87,7 @@ const LeftSideBar = () => {
         sx={{
           width: width < 800 ? 205 : 270,
           flexShrink: 0,
-          zIndex: width < 800 ? 1 : 0,
+          zIndex: width < 800 ? 10 : 0,
           '& .MuiDrawer-paper': {
             width: width < 800 ? 205 : 270,
 
@@ -231,18 +231,11 @@ const Main = styled('main', {
     duration: theme.transitions.duration.leavingScreen,
   }),
 
+  //problem of scroll
   marginLeft: `-${!open && 270}px`,
-
   marginRight: `-${!rightsidebaropen && 350}px`,
-  margin: `0 ${width <= 800 && 0}  0 0`,
 
-  ...(open && {
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  }),
+  margin: `0 ${width <= 800 && 0}  0 0`,
 }))
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',

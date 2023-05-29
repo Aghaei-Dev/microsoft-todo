@@ -26,6 +26,7 @@ import {
 } from '../images'
 
 import {
+  LightModeOutlinedIcon,
   CampaignOutlinedIcon,
   QuestionMarkOutlinedIcon,
   SettingsOutlinedIcon,
@@ -160,61 +161,76 @@ export const FiveIconSideBare = [
 export const optionsValue = [{ icon: <PrintOutlinedIcon />, title: 'print' }]
 export const optionsValueInOtherPage = [
   { icon: <ColorLensOutlinedIcon />, title: 'changeTheme' },
-
-  { icon: <PrintOutlinedIcon />, title: 'print' },
+  ...optionsValue,
 ]
 
 export const sortValue = [
   {
-    icon: <StarBorderOutlinedIcon />,
+    icon: <StarBorderOutlinedIcon fontSize='small' />,
     title: 'importance',
     sortTitle: 'importance',
   },
   {
-    icon: <CalendarMonthOutlinedIcon />,
+    icon: <CalendarMonthOutlinedIcon fontSize='small' />,
     title: 'due date',
   },
   {
-    icon: <SwapVertOutlinedIcon />,
+    icon: <SwapVertOutlinedIcon fontSize='small' />,
     title: 'alphabetically',
     sortTitle: 'alphabetically',
   },
   {
-    icon: <MoreTimeOutlinedIcon />,
+    icon: <MoreTimeOutlinedIcon fontSize='small' />,
     title: 'creation date',
     sortTitle: 'creationDate',
   },
 ]
 export const sortValueInImportantPage = [
-  { icon: <CalendarMonthOutlinedIcon />, title: 'due date' },
-  { icon: <StarBorderOutlinedIcon />, title: 'adjust to my day' },
+  ...sortValue.slice(1, 2),
   {
-    icon: <SwapVertOutlinedIcon />,
-    title: 'alphabetically',
-    sortTitle: 'alphabetically',
+    icon: <LightModeOutlinedIcon fontSize='small' />,
+    title: 'adjust to my day',
   },
-  {
-    icon: <MoreTimeOutlinedIcon />,
-    title: 'creation date',
-    sortTitle: 'creationDate',
-  },
+  ...sortValue.slice(2, 4),
 ]
 export const sortValueInCompletedPageAndTask = [
+  ...sortValue.slice(0, 1),
+  ...sortValueInImportantPage,
+]
+
+export const dueValue = [
+  { icon: <CalendarMonthOutlinedIcon fontSize='small' />, title: 'today' },
+  { icon: <CalendarMonthOutlinedIcon fontSize='small' />, title: 'tomorrow' },
   {
-    icon: <StarBorderOutlinedIcon />,
-    title: 'importance',
-    sortTitle: 'importance',
-  },
-  { icon: <CalendarMonthOutlinedIcon />, title: 'due date' },
-  { icon: <StarBorderOutlinedIcon />, title: 'adjust to my day' },
-  {
-    icon: <SwapVertOutlinedIcon />,
-    title: 'alphabetically',
-    sortTitle: 'alphabetically',
+    icon: <CalendarMonthOutlinedIcon fontSize='small' />,
+    title: 'next week',
+    divider: true,
   },
   {
-    icon: <MoreTimeOutlinedIcon />,
-    title: 'creation date',
-    sortTitle: 'creationDate',
+    icon: <CalendarMonthOutlinedIcon fontSize='small' />,
+    title: 'pick a date',
   },
+]
+export const reminderValue = [
+  {
+    icon: <CalendarMonthOutlinedIcon fontSize='small' />,
+    title: 'later today',
+  },
+  { icon: <CalendarMonthOutlinedIcon fontSize='small' />, title: 'tomorrow' },
+  {
+    icon: <CalendarMonthOutlinedIcon fontSize='small' />,
+    title: 'next week',
+    divider: true,
+  },
+  {
+    icon: <CalendarMonthOutlinedIcon fontSize='small' />,
+    title: 'pick a date & time',
+  },
+]
+export const repeatValue = [
+  { icon: <CalendarMonthOutlinedIcon fontSize='small' />, title: 'daily' },
+  { icon: <CalendarMonthOutlinedIcon fontSize='small' />, title: 'weekdays' },
+  { icon: <CalendarMonthOutlinedIcon fontSize='small' />, title: 'weekly' },
+  { icon: <CalendarMonthOutlinedIcon fontSize='small' />, title: 'monthly' },
+  { icon: <CalendarMonthOutlinedIcon fontSize='small' />, title: 'yearly' },
 ]

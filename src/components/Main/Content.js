@@ -11,7 +11,6 @@ import {
 import { PageTopRow, AddTask, Input, CompletedRow } from '..'
 
 import { PadWrapper, Wrapper } from '../../assets/style/StyledComponent'
-// import Sort from '../../Sort'
 
 import { useGlobalContext } from '../../context/context'
 const Content = () => {
@@ -131,7 +130,6 @@ const Content = () => {
           showNotCompleted={showNotCompleted}
           showCompleted
         />
-        {/* <Sort /> */}
       </Wrapper>
     </>
   )

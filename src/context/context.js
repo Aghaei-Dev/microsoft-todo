@@ -15,7 +15,6 @@ import {
   getDarkMode,
   getSidebarTitle,
   sortByCreationDate,
-  descendingComparator,
   sortAlphabetically,
   sortIsImportant,
   lengthChecker,
@@ -41,6 +40,7 @@ const MicrosoftTodoProvider = ({ children }) => {
   const print = () => {
     console.log('print')
   }
+
   //left and right Drawer in the NAVBAR
   const [openAnchor, setOpenAnchor] = useState({ left: false, right: false })
   const [rightList, setRightList] = useState('')

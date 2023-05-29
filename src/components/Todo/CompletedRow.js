@@ -20,7 +20,7 @@ const CompletedRow = ({
   listInTopTitle,
   listInTop,
 }) => {
-  const { height, showBottomRow } = useGlobalContext()
+  const { height, showBottomRow, showSort } = useGlobalContext()
   const list =
     listInTopTitle === 'important'
       ? listInTop.filter((item) => item.isCompleted !== true)
@@ -30,7 +30,7 @@ const CompletedRow = ({
   const [parent] = useAutoAnimate()
 
   return (
-    <Wrapper height={height} showBottomRow={showBottomRow}>
+    <Wrapper height={height} showBottomRow={showBottomRow} showSort={showSort}>
       {showNotCompleted && list?.length > 0 && (
         <div className='not-completed' ref={parent}>
           {list.map((item) => {
@@ -66,10 +66,17 @@ const CompletedRow = ({
 
 export default CompletedRow
 
-const Wrapper = styled('div')(({ height, showBottomRow }) => ({
+const Wrapper = styled('div')(({ height, showBottomRow, showSort }) => ({
   width: '100%',
-  height: showBottomRow ? height - 260 : height - 210,
-  padding: '0 1.5rem 0 2rem ',
+
+  height:
+    showBottomRow && showSort
+      ? height - 280
+      : showBottomRow
+      ? height - 258
+      : showSort && height - 230,
+  padding: '0 2rem',
+
   overflow: 'auto',
   '.not-completed': {
     padding: '1rem 0',

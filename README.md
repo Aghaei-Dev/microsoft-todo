@@ -5,4 +5,4 @@
 
 another time gonna add details 
 
-for now this <a herf='https://project-21-microsoft-todo.netlify.app'>live site</a>
+for now this[try live site](https://project-21-microsoft-todo.netlify.app)

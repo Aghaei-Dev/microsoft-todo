@@ -14,31 +14,6 @@ export const lengthChecker = (string, width) => {
   }
 }
 
-export const getSidebarTitle = () => {
-  let sidebarTitle = localStorage.getItem('sidebarTitle')
-
-  if (
-    sidebarTitle === 'my day' ||
-    sidebarTitle === 'important' ||
-    sidebarTitle === 'completed' ||
-    sidebarTitle === 'task'
-  ) {
-    return JSON.parse(localStorage.getItem('sidebarTitle'))
-  } else {
-    return 'my day'
-  }
-}
-
-export const getDarkMode = () => {
-  let darkMode = localStorage.getItem('darkMode')
-
-  if (darkMode) {
-    return JSON.parse(localStorage.getItem('darkMode'))
-  } else {
-    return ''
-  }
-}
-
 export const sortAlphabetically = (a, b) => {
   const textA = a.text.toUpperCase()
   const textB = b.text.toUpperCase()
@@ -64,19 +39,3 @@ export const sortByCreationDate = (a, b) => {
 export const sortIsImportant = (a, b) => {
   return a.isImportant === b.isImportant ? 0 : a.isImportant ? -1 : 1
 }
-
-// export function descendingComparator(a, b, orderBy) {
-//   if (b[orderBy] < a[orderBy]) {
-//     return -1
-//   }
-//   if (b[orderBy] > a[orderBy]) {
-//     return 1
-//   }
-//   return 0
-// }
-
-// function getComparator(order, orderBy) {
-//   return order === 'desc'
-//     ? (a, b) => descendingComparator(a, b, orderBy)
-//     : (a, b) => -descendingComparator(a, b, orderBy)
-// }

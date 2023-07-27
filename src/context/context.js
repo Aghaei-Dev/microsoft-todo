@@ -12,16 +12,19 @@ import {
   getDocs,
 } from 'firebase/firestore'
 import {
-  getDarkMode,
-  getSidebarTitle,
   sortByCreationDate,
   sortAlphabetically,
   sortIsImportant,
   lengthChecker,
 } from '../func/functions'
+import { useAuth0 } from '@auth0/auth0-react'
+import { useLocalStorage } from '../hook'
+
 const ToDoContext = React.createContext()
 
 const MicrosoftTodoProvider = ({ children }) => {
+  const { user } = useAuth0()
+
   const [showBottomRow, setShowBottomRow] = useState(false)
   //sound
   const [play] = useSound(sound)
@@ -31,7 +34,7 @@ const MicrosoftTodoProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false)
 
   //darkMode
-  const [isDarkMode, setIsDarkMode] = useState(getDarkMode())
+  const [isDarkMode, setIsDarkMode] = useLocalStorage('isDarkMode', false)
 
   const toggleDarkMode = () => {
     setIsDarkMode((prevValue) => !prevValue)
@@ -65,8 +68,11 @@ const MicrosoftTodoProvider = ({ children }) => {
   }
 
   //left sidebar
-  const [sidebarTitle, setSidebarTitle] = useState(getSidebarTitle())
-  const [open, setOpen] = useState(false)
+  const [sidebarTitle, setSidebarTitle] = useLocalStorage(
+    'sidebarTitle',
+    'my day'
+  )
+  const [open, setOpen] = useLocalStorage('leftDrawer', false)
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -76,7 +82,10 @@ const MicrosoftTodoProvider = ({ children }) => {
   }
 
   //right sidebar
-  const [rightSideBarOpen, setRightSideBarOpen] = useState(false)
+  const [rightSideBarOpen, setRightSideBarOpen] = useLocalStorage(
+    'rightSideBarOpen',
+    false
+  )
 
   const handleRightSideBarOpen = () => {
     setRightSideBarOpen(true)
@@ -95,11 +104,10 @@ const MicrosoftTodoProvider = ({ children }) => {
   const [toDoIsLoading, setToDoIsLoading] = useState(true)
 
   const [sortTitle, setSortTitle] = useState('')
-
-  const todoCollectionRef = collection(db, 'ToDo')
+  const todoCollectionRef = collection(db, `${user?.email}?ToDo`)
 
   //add todo to firebase
-  //here
+
   const submitHandler = async (e, special) => {
     e.preventDefault()
     if (inputText) {
@@ -145,7 +153,7 @@ const MicrosoftTodoProvider = ({ children }) => {
   }
 
   const setAsCompleted = async (id) => {
-    const specificItem = doc(db, 'ToDo', id)
+    const specificItem = doc(db, `${user?.email}?ToDo`, id)
     await updateDoc(specificItem, {
       isCompleted: true,
       doneAt: new Date().getTime().toString(),
@@ -154,22 +162,22 @@ const MicrosoftTodoProvider = ({ children }) => {
     getTodo()
   }
   const setAsNotCompleted = async (id) => {
-    const specificItem = doc(db, 'ToDo', id)
+    const specificItem = doc(db, `${user?.email}?ToDo`, id)
     await updateDoc(specificItem, { isCompleted: false, doneAt: '' })
     getTodo()
   }
   const setAsImportant = async (id) => {
-    const specificItem = doc(db, 'ToDo', id)
+    const specificItem = doc(db, `${user?.email}?ToDo`, id)
     await updateDoc(specificItem, { isImportant: true })
     getTodo()
   }
   const setAsNotImportant = async (id) => {
-    const specificItem = doc(db, 'ToDo', id)
+    const specificItem = doc(db, `${user?.email}?ToDo`, id)
     await updateDoc(specificItem, { isImportant: false })
     getTodo()
   }
   const deleteHandler = async (id) => {
-    const specificItem = doc(db, 'ToDo', id)
+    const specificItem = doc(db, `${user?.email}?ToDo`, id)
     await deleteDoc(specificItem)
     getTodo()
   }
@@ -189,7 +197,7 @@ const MicrosoftTodoProvider = ({ children }) => {
   const [newListArray, setNewListArray] = useState([])
   const [newListInp, setNewListInp] = useState('')
 
-  const newListCollectionRef = collection(db, 'NewList')
+  const newListCollectionRef = collection(db, `${user?.email}?NewList`)
 
   //add NewList to firebase
   const submitNewList = async (e) => {
@@ -243,10 +251,6 @@ const MicrosoftTodoProvider = ({ children }) => {
     }
   }, [width, height])
 
-  useEffect(() => {
-    localStorage.setItem('sidebarTitle', JSON.stringify(sidebarTitle))
-  }, [sidebarTitle])
-
   //set dark mode
   useEffect(() => {
     if (isDarkMode) {
@@ -254,7 +258,6 @@ const MicrosoftTodoProvider = ({ children }) => {
     } else {
       document.documentElement.classList.remove('dark-mode')
     }
-    localStorage.setItem('darkMode', isDarkMode)
   }, [isDarkMode])
 
   useEffect(() => {
@@ -266,7 +269,7 @@ const MicrosoftTodoProvider = ({ children }) => {
     getTodo()
     getNewList()
     // eslint-disable-next-line
-  }, [])
+  }, [user])
 
   return (
     <ToDoContext.Provider
